@@ -20,41 +20,34 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:onClick="onClick"
-            android:text="计时器" />
+            android:text="@string/mainPage_Counter" />
 
         <Button
             android:id="@+id/mainPage_WebView_Btn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:onClick="onClick"
-            android:text="网页浏览器" />
+            android:text="@string/mainPage_WebBrowser" />
 
         <Button
             android:id="@+id/mainPage_Camera_Btn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:onClick="onClick"
-            android:text="摄像头" />
-
-        <Button
-            android:id="@+id/mainPage_Usb_Btn"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:onClick="onClick"
-            android:text="USB" />
+            android:text="@string/mainPage_Camera" />
 
         <Button
             android:id="@+id/mainPage_Touch_Btn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:onClick="onClick"
-            android:text="触屏检测" />
+            android:text="@string/mainPage_TouchView" />
         <Button
             android:id="@+id/mainPage_Http_Btn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:onClick="onClick"
-            android:text="Http" />
+            android:text="@string/mainPage_Http" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

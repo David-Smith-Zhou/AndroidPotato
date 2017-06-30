@@ -3,9 +3,9 @@ package com.androidpotato.mylibrary.bluetooth;
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import com.androidpotato.mylibrary.util.TypeConvert;
+import com.androidpotato.mylibrary.util.UtilLog;
 
 import java.io.InputStream;
 import java.util.Arrays;
@@ -32,13 +32,13 @@ public class BTListenThread extends Thread{
             this.inputStream = bluetoothSocket.getInputStream();
             dataBytes = new byte[BYTES_SIZE];
         } catch (Exception e) {
-            Log.e(TAG, "In BTListenThread:" + e.getLocalizedMessage());
+            UtilLog.e(TAG, "In BTListenThread:" + e.getLocalizedMessage());
         }
     }
 
     public void setIsListen(boolean isListen) {
         this.isListen = isListen;
-        Log.e(TAG, "In setIsListen: set the isListen");
+        UtilLog.e(TAG, "In setIsListen: set the isListen");
     }
 
     private void listenFromSocket() {
@@ -47,7 +47,7 @@ public class BTListenThread extends Thread{
             Arrays.fill(dataBytes, (byte) 0);
             dataLength = inputStream.read(dataBytes);
         } catch (Exception e) {
-            Log.e(TAG, "In listenFromSocket:" + e.getMessage());
+            UtilLog.e(TAG, "In listenFromSocket:" + e.getMessage());
         }
         if (dataLength != -1) {
             byte[] data = new byte[dataLength];
@@ -55,7 +55,7 @@ public class BTListenThread extends Thread{
 
             if (onBTListenThreadListener != null) {
                 onBTListenThreadListener.onRead(dataLength, data);
-                Log.i(TAG, "Response(HEX String): " + TypeConvert.bytesToHexString(data));
+                UtilLog.i(TAG, "Response(HEX String): " + TypeConvert.bytesToHexString(data));
                 return;
             }
             Message msg = new Message();
@@ -63,7 +63,7 @@ public class BTListenThread extends Thread{
             msg.obj = data;
             msg.arg1 = dataLength;
             handler.sendMessage(msg);
-            Log.i(TAG, "Response(HEX String): " + TypeConvert.bytesToHexString(data));
+            UtilLog.i(TAG, "Response(HEX String): " + TypeConvert.bytesToHexString(data));
         }
     }
 
@@ -73,7 +73,7 @@ public class BTListenThread extends Thread{
         while(isListen) {
             listenFromSocket();
         }
-        Log.v(TAG, "In run: BTListenThread is stopped");
+        UtilLog.v(TAG, "In run: BTListenThread is stopped");
     }
 
     public void setOnBTListenThreadListener(OnBTListenThreadListener onBTListenThreadListener) {

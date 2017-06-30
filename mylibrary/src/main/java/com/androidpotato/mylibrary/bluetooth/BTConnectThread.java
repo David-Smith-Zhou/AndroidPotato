@@ -1,7 +1,8 @@
 package com.androidpotato.mylibrary.bluetooth;
 
 import android.bluetooth.BluetoothSocket;
-import android.util.Log;
+
+import com.androidpotato.mylibrary.util.UtilLog;
 
 import java.io.IOException;
 
@@ -21,18 +22,18 @@ public class BTConnectThread extends Thread {
     @Override
     public void run() {
         super.run();
-        //Log.i(TAG, "connecting");
-        Log.i(TAG, "Connecting --> name:" + bluetoothSocket.getRemoteDevice().getName() + ", Mac: " + bluetoothSocket.getRemoteDevice().getAddress());
+        //UtilLog.i(TAG, "connecting");
+        UtilLog.i(TAG, "Connecting --> name:" + bluetoothSocket.getRemoteDevice().getName() + ", Mac: " + bluetoothSocket.getRemoteDevice().getAddress());
         try {
             bluetoothSocket.connect();
-            Log.i(TAG, "connect success --> name: " + bluetoothSocket.getRemoteDevice().getName() + ", Mac: " + bluetoothSocket.getRemoteDevice().getAddress());
+            UtilLog.i(TAG, "connect success --> name: " + bluetoothSocket.getRemoteDevice().getName() + ", Mac: " + bluetoothSocket.getRemoteDevice().getAddress());
             //callback to bluetooth so that i can only manage bluetooth in class bluetooth
             if (onBluetoothThreadListener != null) {
                 onBluetoothThreadListener.OnConnect(bluetoothSocket, true);
                 onBluetoothThreadListener = null;
             }
         } catch (IOException e) {
-            Log.i(TAG, "connect failed --> name: " + bluetoothSocket.getRemoteDevice().getName() + ", Mac: " + bluetoothSocket.getRemoteDevice().getAddress());
+            UtilLog.i(TAG, "connect failed --> name: " + bluetoothSocket.getRemoteDevice().getName() + ", Mac: " + bluetoothSocket.getRemoteDevice().getAddress());
             e.printStackTrace();
             if (onBluetoothThreadListener != null) {
                 onBluetoothThreadListener.OnConnect(null, false);

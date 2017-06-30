@@ -17,6 +17,7 @@ public class UtilLog {
     public static final int LEVLE_INFO = 0x22;
     public static final int LEVLE_WARING = 0x23;
     public static final int LEVLE_ERROR = 0x24;
+    public static final int LEVLE_VERBOSE = 0x25;
 
     private static int mLogDir = LOG_DIRECTION_LOGCAT;
 
@@ -31,6 +32,9 @@ public class UtilLog {
     }
     public static void e(String tag, String msg) {
         log(UtilLog.LEVLE_ERROR, tag, msg);
+    }
+    public static void v(String tag, String msg) {
+        log(UtilLog.LEVLE_VERBOSE, tag, msg);
     }
 
     public static void log(int level, String tag, String msg) {
@@ -64,6 +68,9 @@ public class UtilLog {
             case LEVLE_WARING:
                 print("WARING", tag, msg);
                 break;
+            case LEVLE_VERBOSE:
+                print("VERBOSE", tag, msg);
+                break;
             default:
                 print("INFO", tag, msg);
                 break;
@@ -86,6 +93,8 @@ public class UtilLog {
             case LEVLE_WARING:
                 Log.w(tag, msg);
                 break;
+            case LEVLE_VERBOSE:
+                Log.v(tag, msg);
             default:
                 Log.i(tag, msg);
                 break;

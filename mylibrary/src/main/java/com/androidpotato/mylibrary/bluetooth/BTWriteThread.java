@@ -1,9 +1,9 @@
 package com.androidpotato.mylibrary.bluetooth;
 
 import android.bluetooth.BluetoothSocket;
-import android.util.Log;
 
 import com.androidpotato.mylibrary.util.TypeConvert;
+import com.androidpotato.mylibrary.util.UtilLog;
 
 import java.io.OutputStream;
 import java.util.Arrays;
@@ -24,17 +24,17 @@ public class BTWriteThread extends Thread{
             this.dataBytes = dataBytes;
             outputStream = bluetoothSocket.getOutputStream();
         } catch (Exception e) {
-            Log.e("BTWriteThread", "In BTWriteThread:" + e.getLocalizedMessage());
+            UtilLog.e("BTWriteThread", "In BTWriteThread:" + e.getLocalizedMessage());
         }
     }
 
     private void sendToSocket() {
         try {
             outputStream.write(dataBytes);
-            Log.i("BTWriteThread", "Send(byte[]): " + Arrays.toString(dataBytes));
-            Log.i("BTWriteThread", "Send(HEX String): " + TypeConvert.bytesToHexString(dataBytes));
+            UtilLog.i("BTWriteThread", "Send(byte[]): " + Arrays.toString(dataBytes));
+            UtilLog.i("BTWriteThread", "Send(HEX String): " + TypeConvert.bytesToHexString(dataBytes));
         } catch (Exception e) {
-            Log.e("BTWriteThread", "In sendBytes:" + e.getLocalizedMessage());
+            UtilLog.e("BTWriteThread", "In sendBytes:" + e.getLocalizedMessage());
         }
     }
 

@@ -10,9 +10,9 @@ import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.androidpotato.mylibrary.util.TypeConvert;
+import com.androidpotato.mylibrary.util.UtilLog;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -195,12 +195,12 @@ public class BluetoothSSP extends BluetoothBase {
     @Override
     public void write(byte[] request, String address) {
         if (clientSocket == null) {
-            Log.e(TAG, "clientSocket is NULL");
+            UtilLog.e(TAG, "clientSocket is NULL");
         } else {
             try {
                 OutputStream outputStream = clientSocket.getOutputStream();
                 outputStream.write(request);
-                Log.i(TAG, "send: " + TypeConvert.bytesToHexString(request));
+                UtilLog.i(TAG, "send: " + TypeConvert.bytesToHexString(request));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -215,18 +215,18 @@ public class BluetoothSSP extends BluetoothBase {
     @Nullable
     private BluetoothSocket getBluetoothSocket(BluetoothDevice bluetoothDevice) {
         try {
-            Log.v(TAG, "Create Insecure socket");
+            UtilLog.v(TAG, "Create Insecure socket");
             BluetoothSocket insecureSocket = bluetoothDevice.createInsecureRfcommSocketToServiceRecord(MY_UUID_SECURE);
             return insecureSocket;
         } catch (IOException ioE) {
-            Log.v(TAG, "Create Insecure socket failed");
+            UtilLog.v(TAG, "Create Insecure socket failed");
             ioE.printStackTrace();
             try {
-                Log.v(TAG, "Create Secure socket");
+                UtilLog.v(TAG, "Create Secure socket");
                 BluetoothSocket secureSocket = bluetoothDevice.createRfcommSocketToServiceRecord(MY_UUID_SECURE);
                 return secureSocket;
             } catch (Exception e) {
-                Log.v(TAG, "Create Secure socket failed");
+                UtilLog.v(TAG, "Create Secure socket failed");
                 e.printStackTrace();
                 return null;
             }
@@ -235,14 +235,10 @@ public class BluetoothSSP extends BluetoothBase {
 
     private void registerBroadcast() {
         IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
-        context.registerReceiver(btDiscoveryReceiver, filter);
-        filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-        context.registerReceiver(btDiscoveryReceiver, filter);
-        filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-        context.registerReceiver(btDiscoveryReceiver, filter);
-        filter = new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-        context.registerReceiver(btDiscoveryReceiver, filter);
-        filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+        filter.addAction(BluetoothDevice.ACTION_FOUND);
+        filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+        filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         context.registerReceiver(btDiscoveryReceiver, filter);
     }
 
@@ -255,20 +251,20 @@ public class BluetoothSSP extends BluetoothBase {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (action.equals(BluetoothAdapter.ACTION_DISCOVERY_STARTED)) {
-                Log.i(TAG, "Discovery Started...");
+                UtilLog.i(TAG, "Discovery Started...");
             } else if (action.equals(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)) {
                 if (onBluetoothListener != null) {
                     onBluetoothListener.onScanFinished(bluetoothDevices);
                 }
-                Log.i(TAG, "Discovery Finished");
+                UtilLog.i(TAG, "Discovery Finished");
             } else if (action.equals(BluetoothDevice.ACTION_FOUND)) {
                 BluetoothDevice findDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 short rssi = intent.getExtras().getShort(BluetoothDevice.EXTRA_RSSI);
-                Log.i(TAG, "Find -- name: " + findDevice.getName() + " addr: " + findDevice.getAddress());
+                UtilLog.i(TAG, "Find -- name: " + findDevice.getName() + " addr: " + findDevice.getAddress());
                 if (!bluetoothDevices.contains(findDevice)) {
                     bluetoothDevices.add(findDevice);
                     if (onBluetoothListener != null) {
-                        onBluetoothListener.onFind(bluetoothDevices, findDevice, rssi, null);
+                        onBluetoothListener.onFind(bluetoothDevices, findDevice, rssi);
                     }
                 }
                 if (onBluetoothListener != null) {
@@ -291,13 +287,13 @@ public class BluetoothSSP extends BluetoothBase {
                 int status = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1);
                 switch (status) {
                     case BluetoothAdapter.STATE_OFF:
-                        Log.d(TAG, "Bluetooth: STATE_OFF");
+                        UtilLog.d(TAG, "Bluetooth: STATE_OFF");
                         if (onBluetoothListener != null) {
                             onBluetoothListener.onTick(1000, bluetoothAdapter.isEnabled(), isConnected, bluetoothDevices);
                         }
                         break;
                     case BluetoothAdapter.STATE_ON:
-                        Log.d(TAG, "Bluetooth: STATE_ON");
+                        UtilLog.d(TAG, "Bluetooth: STATE_ON");
                         if (onBluetoothListener != null) {
                             onBluetoothListener.onTick(1000, bluetoothAdapter.isEnabled(), isConnected, bluetoothDevices);
                         }
@@ -307,7 +303,7 @@ public class BluetoothSSP extends BluetoothBase {
                 }
 
             } else {
-                Log.i(TAG, "Discovery get unknown result");
+                UtilLog.i(TAG, "Discovery get unknown result");
             }
         }
     };
