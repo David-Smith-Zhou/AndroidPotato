@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <FrameLayout
+            android:id="@+id/page_camera_fl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="4"
+        android:stretchColumns="0,1,2">
+        <TableRow>
+            <Button
+                android:id="@+id/page_camera_changeCamera_Btn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="切换摄像头"/>
+            <Button
+                android:id="@+id/page_camera_takePhoto_Btn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="拍照"/>
+            <Button
+                android:id="@+id/page_camera_takeVideo_Btn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="录像"/>
+
+        </TableRow>
+
+    </TableLayout>
+
+</LinearLayout>
