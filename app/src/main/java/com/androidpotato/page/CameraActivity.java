@@ -1,4 +1,4 @@
-package com.androidpotato.androidpotato.page;
+package com.androidpotato.page;
 
 import android.hardware.Camera;
 import android.os.Bundle;
@@ -6,9 +6,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 
-import com.androidpotato.androidpotato.R;
-import com.androidpotato.androidpotato.camera.CameraInterfaces;
-import com.androidpotato.androidpotato.camera.CameraPreview;
+
+import com.androidpotato.R;
+import com.androidpotato.camera.CameraInterfaces;
+import com.androidpotato.camera.CameraPreview;
 import com.androidpotato.mylibrary.util.UtilLog;
 
 

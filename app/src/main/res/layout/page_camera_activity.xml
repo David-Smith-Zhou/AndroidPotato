@@ -1,41 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    <RelativeLayout
+    tools:context="com.androidpotato.page.CameraActivity">
+
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-        <FrameLayout
-            android:id="@+id/page_camera_fl"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </RelativeLayout>
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="4"
-        android:stretchColumns="0,1,2">
-        <TableRow>
-            <Button
-                android:id="@+id/page_camera_changeCamera_Btn"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="切换摄像头"/>
-            <Button
-                android:id="@+id/page_camera_takePhoto_Btn"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="拍照"/>
-            <Button
-                android:id="@+id/page_camera_takeVideo_Btn"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="录像"/>
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-        </TableRow>
+    </android.support.design.widget.AppBarLayout>
 
-    </TableLayout>
+    <include layout="@layout/content_camera" />
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

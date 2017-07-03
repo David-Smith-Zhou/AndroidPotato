@@ -209,7 +209,7 @@ public class BluetoothSSP extends BluetoothBase {
 
     @Override
     public List<BluetoothDevice> getPairedDevices() {
-        return null;
+        return new ArrayList<BluetoothDevice>(bluetoothAdapter.getBondedDevices());
     }
 
     @Nullable

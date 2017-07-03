@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.androidpotato.androidpotato">
+    package="com.androidpotato">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -25,11 +25,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".page.TouchActivity" />
-        <activity android:name=".page.WebViewActivity" />
-        <activity android:name=".page.CameraActivity" />
-        <activity android:name=".page.HttpActivity" />
-        <activity android:name=".page.TimeCounterActivity" />
+        <activity android:name=".page.TouchActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".page.WebViewActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".page.CameraActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".page.HttpActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".page.TimeCounterActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

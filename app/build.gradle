@@ -15,6 +15,19 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith(".apk")) {
+                        def fileName = "AndroidPotato-${defaultConfig.versionName}-${buildDate()}.apk"
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    }
+                }
+            }
+        }
+        debug {
+            applicationIdSuffix '.dev'
+            versionNameSuffix '.dev'
         }
     }
 }
@@ -29,4 +42,12 @@ dependencies {
     compile 'com.android.support:design:25.3.1'
     testCompile 'junit:junit:4.12'
     compile project(':mylibrary')
+}
+
+static def buildDate() {
+    return new Date().format("yyyyMMdd", TimeZone.getDefault())
+}
+
+static def buildTime() {
+    return new Date().format("yyyy-MM-dd HH:mm", TimeZone.getDefault() + "\"")
 }

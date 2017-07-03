@@ -1,4 +1,4 @@
-package com.androidpotato.androidpotato.widget;
+package com.androidpotato.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -9,10 +9,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
-import com.androidpotato.androidpotato.widget.dto.Coordinate;
+
 import com.androidpotato.mylibrary.util.UtilLog;
+import com.androidpotato.widget.dto.Coordinate;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -84,9 +86,9 @@ public class TouchView extends View {
     }
     private void drawCircles(Canvas canvas) {
         for (Coordinate center : circleCenters) {
-            if (center.isShow()) {
+//            if (center.isShow()) {
                 canvas.drawCircle(center.getX(), center.getY(), RADIUS, paint);
-            }
+//            }
         }
     }
     @Override
@@ -105,18 +107,36 @@ public class TouchView extends View {
     }
 
     private void checkDistance(float x, float y) {
-        for (Coordinate coordinate : circleCenters) {
-            if (coordinate.isShow()) {
-                float disXAbs = Math.abs(x - coordinate.getX());
-                float disYAbs = Math.abs(y - coordinate.getY());
-                double distance = Math.sqrt(Math.pow(disXAbs, 2) + Math.pow(disYAbs, 2));
-                if (distance < RADIUS) {
-                    coordinate.setShow(false);
-                    showCount--;
-                    invalidate();
-                }
+
+        Iterator<Coordinate> iterator = circleCenters.iterator();
+        while(iterator.hasNext()) {
+            Coordinate coordinate = iterator.next();
+            float disXAbs = Math.abs(x - coordinate.getX());
+            float disYAbs = Math.abs(y - coordinate.getY());
+            double distance = Math.sqrt(Math.pow(disXAbs, 2) + Math.pow(disYAbs, 2));
+            if (distance < RADIUS) {
+                iterator.remove();
+                UtilLog.i(TAG, "circleCenters size = " + circleCenters.size());
+                showCount--;
+                invalidate();
             }
         }
+
+
+
+
+//        for (Coordinate coordinate : circleCenters) {
+//            if (coordinate.isShow()) {
+//                float disXAbs = Math.abs(x - coordinate.getX());
+//                float disYAbs = Math.abs(y - coordinate.getY());
+//                double distance = Math.sqrt(Math.pow(disXAbs, 2) + Math.pow(disYAbs, 2));
+//                if (distance < RADIUS) {
+//                    coordinate.setShow(false);
+//                    showCount--;
+//                    invalidate();
+//                }
+//            }
+//        }
     }
 
 

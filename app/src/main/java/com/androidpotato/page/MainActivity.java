@@ -1,4 +1,4 @@
-package com.androidpotato.androidpotato.page;
+package com.androidpotato.page;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +9,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.androidpotato.androidpotato.R;
+import com.androidpotato.R;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.page_activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

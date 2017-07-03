@@ -1,11 +1,11 @@
-package com.androidpotato.androidpotato.page;
+package com.androidpotato.page;
 
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.androidpotato.androidpotato.R;
+import com.androidpotato.R;
 import com.androidpotato.mylibrary.util.UtilLog;
 
 

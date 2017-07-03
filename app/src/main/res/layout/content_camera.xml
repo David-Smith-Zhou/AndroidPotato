@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".page.CameraActivity"
+    tools:showIn="@layout/page_camera_activity">
+
+    <TableLayout
+        android:id="@+id/content_camera_TableLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:stretchColumns="0,1,2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/content_camera_changeCamera_Btn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="切换摄像头" />
+
+            <Button
+                android:id="@+id/content_camera_takePhoto_Btn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="拍照" />
+
+            <Button
+                android:id="@+id/content_camera_takeVideo_Btn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="录像" />
+
+        </TableRow>
+    </TableLayout>
+
+    <FrameLayout
+        android:id="@+id/page_camera_fl"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/content_camera_TableLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.androidpotato.androidpotato.widget.dto;
+package com.androidpotato.widget.dto;
 
 /**
  * Created by David on 2017/6/21 0021.
@@ -7,12 +7,12 @@ package com.androidpotato.androidpotato.widget.dto;
 public class Coordinate {
     private float x;
     private float y;
-    private boolean isShow;
+//    private boolean isShow;
 
     public Coordinate(float x, float y) {
         this.x = x;
         this.y = y;
-        this.isShow = true;
+//        this.isShow = true;
     }
 
     public float getX() {
@@ -23,11 +23,11 @@ public class Coordinate {
         return y;
     }
 
-    public void setShow(boolean show) {
-        isShow = show;
-    }
-
-    public boolean isShow() {
-        return isShow;
-    }
+//    public void setShow(boolean show) {
+//        isShow = show;
+//    }
+//
+//    public boolean isShow() {
+//        return isShow;
+//    }
 }

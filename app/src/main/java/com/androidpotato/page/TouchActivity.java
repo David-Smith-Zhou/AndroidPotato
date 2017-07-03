@@ -1,4 +1,4 @@
-package com.androidpotato.androidpotato.page;
+package com.androidpotato.page;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -6,8 +6,8 @@ import android.support.annotation.Nullable;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
-import com.androidpotato.androidpotato.R;
-import com.androidpotato.androidpotato.widget.TouchView;
+import com.androidpotato.R;
+import com.androidpotato.widget.TouchView;
 
 
 /**
@@ -16,7 +16,6 @@ import com.androidpotato.androidpotato.widget.TouchView;
 
 public class TouchActivity extends Activity {
     private static final String TAG = "TouchActivity";
-    private TextView tv;
     private TouchView touchView;
 
     @Override
@@ -27,13 +26,11 @@ public class TouchActivity extends Activity {
     }
 
     private void initView() {
-        tv = (TextView) this.findViewById(R.id.touch_tv);
         touchView = (TouchView) this.findViewById(R.id.touch_touchView);
     }
 
     private void setText(MotionEvent event) {
         float x = event.getX();
         float y = event.getY();
-        tv.setText(getString(R.string.touchText, x, y));
     }
 }

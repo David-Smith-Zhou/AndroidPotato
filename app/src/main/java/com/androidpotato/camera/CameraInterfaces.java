@@ -1,4 +1,4 @@
-package com.androidpotato.androidpotato.camera;
+package com.androidpotato.camera;
 
 import android.hardware.Camera;
 import android.view.View;
