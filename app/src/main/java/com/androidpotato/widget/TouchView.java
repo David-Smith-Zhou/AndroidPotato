@@ -15,7 +15,7 @@ import com.androidpotato.widget.dto.Coordinate;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
+import java.util.LinkedList;
 
 
 /**
@@ -27,8 +27,7 @@ public class TouchView extends View {
     private static final float RADIUS = 30;
     private Context context;
     private boolean isInit = true;
-    private List<Coordinate> circleCenters;
-    private int showCount;
+    private LinkedList<Coordinate> circleCenters;
     private Paint paint;
 
     public TouchView(Context context, AttributeSet sets) {
@@ -41,7 +40,7 @@ public class TouchView extends View {
     }
 
     private void init() {
-        circleCenters = new ArrayList<Coordinate>();
+        circleCenters = new LinkedList<Coordinate>();
         paint  = new Paint();
 
     }
@@ -49,6 +48,7 @@ public class TouchView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        UtilLog.i(TAG, "onMeasure: width = " + getMeasuredWidth() + ", height = " + getMeasuredHeight());
     }
 
     private void createCircles(Canvas canvas) {
@@ -79,7 +79,6 @@ public class TouchView extends View {
         for (float x = width - RADIUS, y = RADIUS; y < height; y += 2 * RADIUS) {
             circleCenters.add(new Coordinate(x, y));
         }
-        showCount = circleCenters.size();
         drawCircles(canvas);
         isInit = false;
 
@@ -117,13 +116,10 @@ public class TouchView extends View {
             if (distance < RADIUS) {
                 iterator.remove();
                 UtilLog.i(TAG, "circleCenters size = " + circleCenters.size());
-                showCount--;
                 invalidate();
+                break;
             }
         }
-
-
-
 
 //        for (Coordinate coordinate : circleCenters) {
 //            if (coordinate.isShow()) {
@@ -144,13 +140,11 @@ public class TouchView extends View {
     public boolean onTouchEvent(MotionEvent event) {
         UtilLog.i(TAG, "onTouchEvent: X = " + event.getX() + ", Y = " + event.getY());
 
-        if (showCount != 0) {
+        if (circleCenters.size() != 0) {
             checkDistance(event.getX(), event.getY());
         } else {
-            Toast.makeText(context, "检测完毕", Toast.LENGTH_SHORT).show();
+            UtilLog.i(TAG, "onTouchEvent: no circles");
         }
-
-
         super.onTouchEvent(event);
         return true;
     }

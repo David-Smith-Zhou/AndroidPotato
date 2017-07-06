@@ -2,35 +2,49 @@ package com.androidpotato.camera;
 
 import android.content.Context;
 import android.hardware.Camera;
+import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.androidpotato.mylibrary.util.UtilLog;
+
 import java.io.IOException;
+import java.text.DecimalFormat;
 
 /**
  * Created by David on 2017/5/31 0031.
  */
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
+    private static final String TAG = "CameraPreview";
     private SurfaceHolder mHolder;
-    private Camera mCamera;
+    private CameraInterfaces cameraInterfaces;
     private Camera.PreviewCallback mCallback;
 
-    public CameraPreview(Context context, Camera camera, Camera.PreviewCallback callback) {
-        super(context);
-        this.mCamera = camera;
-        this.mCallback = callback;
-        mHolder = getHolder();
-        mHolder.addCallback(this);
-        mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+    public CameraPreview(Context context) {
+        this(context, null);
     }
 
+    public CameraPreview(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        mHolder = getHolder();
+        mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        cameraInterfaces = CameraInterfaces.getInstance();
+    }
+
+    public void setPreviewCallback( Camera.PreviewCallback callback) {
+        mHolder.addCallback(this);
+    }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        int height = getMeasuredHeight();
+        int width = getMeasuredWidth();
+        UtilLog.i(TAG, "get height = " + height + ", width = " + width  + ", ratio = " + new DecimalFormat("##.##").format(height / (double)width));
+        cameraInterfaces.setCameraParameters(getContext(), width, height);
         try {
-            mCamera.setPreviewDisplay(holder);
-            mCamera.startPreview();
+            cameraInterfaces.setPreviewDisplay(holder);
+            cameraInterfaces.startPreview();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -41,11 +55,11 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         if (holder.getSurface() == null) {
             return;
         }
-        mCamera.stopPreview();
+        cameraInterfaces.stopPreview();
         try {
-            mCamera.setPreviewDisplay(holder);
-            mCamera.setPreviewCallback(mCallback);
-            mCamera.startPreview();
+            cameraInterfaces.setPreviewDisplay(holder);
+//            mCamera.setPreviewCallback(mCallback);
+            cameraInterfaces.startPreview();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,6 +71,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
     public void release() {
         this.getHolder().removeCallback(this);
-        mCamera.setPreviewCallback(null);
+        cameraInterfaces.setPreviewCallback(null);
     }
 }

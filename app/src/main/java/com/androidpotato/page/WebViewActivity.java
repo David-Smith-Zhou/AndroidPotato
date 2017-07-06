@@ -19,7 +19,7 @@ public class WebViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.page_activity_webview);
+        setContentView(R.layout.page_webview);
         init();
     }
     private void init() {

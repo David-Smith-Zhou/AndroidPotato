@@ -4,11 +4,11 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.FrameLayout;
+import android.view.View;
 
 
 import com.androidpotato.R;
-import com.androidpotato.camera.CameraInterfaces;
+import com.androidpotato.camera.CameraOperator;
 import com.androidpotato.camera.CameraPreview;
 import com.androidpotato.mylibrary.util.UtilLog;
 
@@ -16,24 +16,24 @@ import com.androidpotato.mylibrary.util.UtilLog;
 /**
  * Created by DavidSmith on 2016/6/18 0018.
  */
-public class CameraActivity extends AppCompatActivity {
+public class CameraActivity extends AppCompatActivity implements View.OnClickListener{
     private static final String TAG = "CameraActivity";
     private CameraPreview mCameraPreview;
-    private FrameLayout mFrameLayout;
-    private CameraInterfaces mCameraInterfaces;
+    private CameraOperator cameraOperator;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.page_camera_activity);
+        setContentView(R.layout.page_camera);
         int cameras = Camera.getNumberOfCameras();
         UtilLog.i(TAG, "number of mCamera is: " + cameras);
         initViews();
     }
     private void initViews() {
-        mFrameLayout = (FrameLayout) this.findViewById(R.id.page_camera_fl);
-        mCameraInterfaces = CameraInterfaces.getInstance();
-        mCameraInterfaces.setCameraParameters(mFrameLayout);
-        mCameraPreview = new CameraPreview(CameraActivity.this, mCameraInterfaces.getCamera(), callback);
+        cameraOperator = CameraOperator.getInstance();
+        mCameraPreview = (CameraPreview) this.findViewById(R.id.page_camera_cp);
+        cameraOperator.setCameraPreview(mCameraPreview);
+        mCameraPreview.setPreviewCallback(callback);
     }
     private Camera.PreviewCallback callback = new Camera.PreviewCallback() {
         @Override
@@ -43,29 +43,36 @@ public class CameraActivity extends AppCompatActivity {
     };
 
     @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.content_camera_startPhoto_Btn:
+                cameraOperator.startPreview();
+                break;
+            case R.id.content_camera_stopCamera_Btn:
+                cameraOperator.stopPreview();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-        mCameraInterfaces.startPreview();
-        mFrameLayout.addView(mCameraPreview);
-
+        // do not need startPreview because when the surface is visible, surface will call surface.create method
+        // where startPreview automatic
+//        cameraOperator.resumePreview();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mCameraInterfaces.stopPreview();
-        mCameraPreview.release();
-        mCameraInterfaces.release();
-        mFrameLayout.removeView(mCameraPreview);
-
+        cameraOperator.pausePreview();
     }
 
     @Override
-    public void finish() {
-        super.finish();
-//        if (mCamera != null) {
-//            mCamera.release();
-//            mCamera = null;
-//        }
+    protected void onDestroy() {
+        super.onDestroy();
+        cameraOperator.releasePreview();
     }
 }

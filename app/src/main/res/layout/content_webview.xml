@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.androidpotato.page.WebViewActivity"
-    tools:showIn="@layout/page_activity_webview">
+    tools:showIn="@layout/page_webview">
 
     <WebView
         android:id="@+id/page_activity_webview_WV"

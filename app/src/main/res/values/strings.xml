@@ -9,6 +9,12 @@
     <string name="mainPage_Camera">摄像头</string>
     <string name="mainPage_TouchView">触屏检测</string>
     <string name="mainPage_Http">Http</string>
+    <string name="mainPage_Bluetooth">蓝牙</string>
+
+    <!-- bluetooth ssp -->
+    <string name="bluetooth_scan">扫描</string>
+    <string name="bluetooth_disconnect">断开</string>
+
 
     <string name="touchText">触摸坐标x:%1$f, y:%2$f</string>
 </resources>

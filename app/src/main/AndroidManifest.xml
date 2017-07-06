@@ -35,6 +35,8 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".page.TimeCounterActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".page.BluetoothSSPActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
