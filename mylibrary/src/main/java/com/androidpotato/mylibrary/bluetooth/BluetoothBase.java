@@ -1,7 +1,12 @@
 package com.androidpotato.mylibrary.bluetooth;
 
+import android.Manifest;
+import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +24,8 @@ public abstract class BluetoothBase {
     protected List<OnBluetoothListener> onBluetoothListeners = new ArrayList<OnBluetoothListener>();
 
     public abstract void start(String uuidService, String uuidCharacteristicWrite, String uuidCharacteristicRead, String uuidCharacteristicReadDescriptor);
+
+    public abstract void start();
 
     public abstract void stop();
 
@@ -80,5 +87,11 @@ public abstract class BluetoothBase {
     public static boolean isSupportBLE(Context context) {
         boolean isSupportBLE = context.getPackageManager().hasSystemFeature("android.hardware.bluetooth_le");
         return isSupportBLE;
+    }
+
+    public void requestPermission(Activity activity, int requestCode) {
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, requestCode);
+        }
     }
 }

@@ -3,6 +3,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="backBtnString">返回</string>
+    <string name="comm_debug">Debug</string>
 
     <string name="mainPage_Counter">计时器</string>
     <string name="mainPage_WebBrowser">网页浏览器</string>
@@ -10,10 +11,17 @@
     <string name="mainPage_TouchView">触屏检测</string>
     <string name="mainPage_Http">Http</string>
     <string name="mainPage_Bluetooth">蓝牙</string>
+    <string name="mainPage_Aidl">AIDL</string>
 
     <!-- bluetooth ssp -->
     <string name="bluetooth_scan">扫描</string>
     <string name="bluetooth_disconnect">断开</string>
+
+
+    <!-- aidl -->
+    <string name="aidl_bind">Bind</string>
+    <string name="aidl_add">Add</string>
+    <string name="aidl_get">Get</string>
 
 
     <string name="touchText">触摸坐标x:%1$f, y:%2$f</string>

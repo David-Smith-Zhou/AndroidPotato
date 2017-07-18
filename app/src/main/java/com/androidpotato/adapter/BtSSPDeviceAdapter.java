@@ -61,7 +61,7 @@ public class BtSSPDeviceAdapter extends BaseAdapter {
         }
         deviceName.setText(devices.get(position).getName());
         deviceMac.setText(devices.get(position).getAddress());
-        return null;
+        return convertView;
     }
 
     private class ViewHolder {

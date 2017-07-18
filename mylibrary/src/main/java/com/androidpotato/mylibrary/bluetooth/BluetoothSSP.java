@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 
@@ -44,7 +45,7 @@ public class BluetoothSSP extends BluetoothBase {
         this.context = context;
         bluetoothDevices = new ArrayList<BluetoothDevice>();
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        handler = new Handler() {
+        handler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
@@ -68,7 +69,7 @@ public class BluetoothSSP extends BluetoothBase {
             }
         };
     }
-
+    @Override
     public void start() {
         start(null, null, null, null);
     }
@@ -109,12 +110,13 @@ public class BluetoothSSP extends BluetoothBase {
 
     @Override
     public void scan() {
+        UtilLog.i(TAG, "scan");
         if (bluetoothAdapter.isEnabled()) {
+            UtilLog.i(TAG, "bluetoothAdapter.isEnabled()");
             cancelScan();
             bluetoothDevices.clear();
             bluetoothAdapter.startDiscovery();
         }
-
     }
 
     @Override

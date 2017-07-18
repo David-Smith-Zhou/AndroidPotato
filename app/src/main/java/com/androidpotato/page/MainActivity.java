@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.androidpotato.R;
+import com.androidpotato.adapter.BtSSPDeviceAdapter;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -46,6 +47,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.mainPage_Http_Btn:
                 intent = new Intent().setClass(this, HttpActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.mainPage_Bluetooth:
+                intent = new Intent().setClass(this, BluetoothSSPActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.mainPage_Aidl:
+                intent = new Intent().setClass(this, AIDLActivity.class);
                 startActivity(intent);
                 break;
             default:
