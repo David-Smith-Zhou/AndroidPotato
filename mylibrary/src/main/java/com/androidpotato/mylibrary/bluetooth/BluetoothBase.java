@@ -29,6 +29,10 @@ public abstract class BluetoothBase {
 
     public abstract void stop();
 
+    public abstract void registerBroadcast();
+
+    public abstract void unRegisterBroadcast();
+
     public abstract void setAutoEnableBluetooth(boolean isAutoEnable);
 
     public abstract void enable();

@@ -58,6 +58,18 @@ public class BluetoothSSPActivity extends AppCompatActivity implements View.OnCl
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        bluetoothBase.registerBroadcast();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        bluetoothBase.unRegisterBroadcast();
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         for (int index = 0; index < permissions.length; index++) {

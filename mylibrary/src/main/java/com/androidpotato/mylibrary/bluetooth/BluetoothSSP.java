@@ -38,6 +38,7 @@ public class BluetoothSSP extends BluetoothBase {
     private List<BluetoothDevice> bluetoothDevices;
     private BluetoothSocket clientSocket;
     private BTListenThread btListenThread;
+    private boolean hasRegisted = false;
     private Handler handler;
 
     public BluetoothSSP(Context context) {
@@ -85,12 +86,12 @@ public class BluetoothSSP extends BluetoothBase {
                 onBluetoothListener.onTick(1000, bluetoothAdapter.isEnabled(), isConnected, bluetoothDevices);
             }
         }
-
     }
 
     @Override
     public void stop() {
         cancelScan();
+        unRegisterBroadcast();
         if (clientSocket != null) {
             try {
                 clientSocket.close();
@@ -103,10 +104,8 @@ public class BluetoothSSP extends BluetoothBase {
             btListenThread.setIsListen(false);
             btListenThread = null;
         }
-
-        unRegisterBroadcast();
-
     }
+
 
     @Override
     public void scan() {
@@ -234,18 +233,30 @@ public class BluetoothSSP extends BluetoothBase {
             }
         }
     }
-
-    private void registerBroadcast() {
-        IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
-        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-        filter.addAction(BluetoothDevice.ACTION_FOUND);
-        filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-        filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
-        context.registerReceiver(btDiscoveryReceiver, filter);
+    @Override
+    public void registerBroadcast() {
+        if (!hasRegisted) {
+            IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+            filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+            filter.addAction(BluetoothDevice.ACTION_FOUND);
+            filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+            filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+            context.registerReceiver(btDiscoveryReceiver, filter);
+            hasRegisted = true;
+            UtilLog.d(TAG, "broadcast registered");
+        } else {
+            UtilLog.d(TAG, "broadcast has registered");
+        }
     }
-
-    private void unRegisterBroadcast() {
-        context.unregisterReceiver(btDiscoveryReceiver);
+    @Override
+    public void unRegisterBroadcast() {
+        if (hasRegisted) {
+            context.unregisterReceiver(btDiscoveryReceiver);
+            hasRegisted = false;
+            UtilLog.d(TAG, "broadcast has unregistered");
+        } else {
+            UtilLog.d(TAG, "Ops, broadcast has not registered yet");
+        }
     }
 
     private BroadcastReceiver btDiscoveryReceiver = new BroadcastReceiver() {
