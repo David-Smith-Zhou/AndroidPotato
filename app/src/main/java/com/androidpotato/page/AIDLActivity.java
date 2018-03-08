@@ -15,8 +15,8 @@ import android.view.View;
 import com.androidpotato.R;
 import com.androidpotato.aidl.Book;
 import com.androidpotato.aidl.BookManager;
-import com.androidpotato.mylibrary.util.UtilLog;
-import com.androidpotato.mylibrary.util.UtilToast;
+import com.davidzhou.library.util.LogUtil;
+import com.davidzhou.library.util.ToastUtil;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class AIDLActivity extends AppCompatActivity implements View.OnClickListe
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            UtilLog.e(TAG, "service connected");
+            LogUtil.e(TAG, "service connected");
             manager = BookManager.Stub.asInterface(service);
             isBonded = true;
             if (manager != null) {
@@ -49,7 +49,7 @@ public class AIDLActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            UtilLog.e(TAG, "service disconnected");
+            LogUtil.e(TAG, "service disconnected");
             isBonded = false;
         }
     };
@@ -57,7 +57,7 @@ public class AIDLActivity extends AppCompatActivity implements View.OnClickListe
     private void addBook() {
         if (!isBonded) {
             attempToBindService();
-            UtilToast.ToastShort(this, "当前与服务未连接，正在尝试连接，请稍后再试");
+            ToastUtil.ToastShort(this, "当前与服务未连接，正在尝试连接，请稍后再试");
             return;
         }
         if (manager != null) {
@@ -75,9 +75,9 @@ public class AIDLActivity extends AppCompatActivity implements View.OnClickListe
     private void getBooks() {
         try {
             books = manager.getBooks();
-            UtilLog.i(TAG, "get Books: " + books.toString());
+            LogUtil.i(TAG, "get Books: " + books.toString());
             for (Book each : books) {
-                UtilLog.i(TAG, "name: " + each.getName() + ", price: " + each.getPrice());
+                LogUtil.i(TAG, "name: " + each.getName() + ", price: " + each.getPrice());
             }
         } catch (RemoteException e) {
             e.printStackTrace();

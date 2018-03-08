@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/all_padding" >
+
+    <TextView
+        android:id="@+id/dialog_none_pin_rssi_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/rssi" />
+    <TextView
+        android:id="@+id/dialog_none_pin_rssi_value_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/dialog_none_pin_rssi_name_tv"
+        android:layout_marginLeft="30dp"
+        android:text="@string/item_rssi_level_high"/>
+
+    <TextView
+        android:id="@+id/dialog_none_pin_auth_type_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/auth_type"
+        android:layout_marginTop="@dimen/martin_top"
+        app:layout_constraintTop_toBottomOf="@id/dialog_none_pin_rssi_name_tv"/>
+    <TextView
+        android:id="@+id/dialog_none_pin_auth_type_value_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/wifi_protocol_wpa"
+        app:layout_constraintTop_toTopOf="@id/dialog_none_pin_auth_type_name_tv"
+        app:layout_constraintLeft_toLeftOf="@id/dialog_none_pin_rssi_value_tv" />
+
+    <include layout="@layout/dialog_common_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/martin_top"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_none_pin_auth_type_name_tv"/>
+
+</android.support.constraint.ConstraintLayout>

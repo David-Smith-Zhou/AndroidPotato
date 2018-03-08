@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/all_padding">
+
+    <TextView
+        android:id="@+id/dialog_wep_pin_rssi_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/rssi" />
+
+    <TextView
+        android:id="@+id/dialog_wep_pin_rssi_value_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:text="@string/item_rssi_level_high"
+        app:layout_constraintLeft_toRightOf="@id/dialog_wep_pin_rssi_name_tv"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/dialog_wep_pin_auth_type_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/martin_top"
+        android:text="@string/auth_type"
+        app:layout_constraintTop_toBottomOf="@id/dialog_wep_pin_rssi_name_tv" />
+
+    <TextView
+        android:id="@+id/dialog_wep_pin_auth_type_value_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/wifi_protocol_wep"
+        app:layout_constraintLeft_toLeftOf="@id/dialog_wep_pin_rssi_value_tv"
+        app:layout_constraintTop_toTopOf="@id/dialog_wep_pin_auth_type_name_tv" />
+
+    <TextView
+        android:id="@+id/dialog_wep_pin_key_index_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/martin_top"
+        android:text="@string/key_index"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_wep_pin_auth_type_name_tv"
+        />
+
+    <Spinner
+        android:id="@+id/dialog_wep_pin_key_index_spinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/martin_top"
+        app:layout_constraintLeft_toLeftOf="@id/dialog_wep_pin_auth_type_value_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_wep_pin_auth_type_name_tv"
+
+        />
+    <EditText
+        android:id="@+id/dialog_wep_pin_password_et"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/martin_top"
+        android:inputType="textPassword"
+        app:layout_constraintLeft_toLeftOf="@id/dialog_wep_pin_auth_type_value_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_wep_pin_key_index_spinner" />
+
+    <TextView
+        android:id="@+id/dialog_wep_pin_password_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/martin_top"
+        android:text="@string/password"
+        app:layout_constraintBaseline_toBaselineOf="@id/dialog_wep_pin_password_et" />
+
+
+    <CheckBox
+        android:id="@+id/dialog_wep_pin_show_password_cb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/show_password"
+        app:layout_constraintLeft_toLeftOf="@id/dialog_wep_pin_password_et"
+        app:layout_constraintTop_toBottomOf="@id/dialog_wep_pin_password_et" />
+
+    <include
+        layout="@layout/dialog_common_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_wep_pin_show_password_cb" />
+</android.support.constraint.ConstraintLayout>

@@ -14,7 +14,8 @@ import android.view.MenuItem;
 import com.androidpotato.R;
 import com.androidpotato.adapter.HomeAdapter;
 import com.androidpotato.dto.MainPageItem;
-import com.androidpotato.mylibrary.util.UtilLog;
+import com.androidpotato.page.wifi.WifiActivity;
+import com.davidzhou.library.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,60 +51,35 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void initData() {
-        MainPageItem timeCount = new MainPageItem();
-        Intent intent = new Intent().setClass(this, TimeCounterActivity.class);
-        timeCount.setIntent(intent);
-        timeCount.setName(this.getString(R.string.mainPage_Counter));
-        items.add(timeCount);
+        addItemWithMainPageItem(TimeCounterActivity.class, this.getString(R.string.mainPage_Counter));
+        addItemWithMainPageItem(WebViewActivity.class, this.getString(R.string.mainPage_WebBrowser));
+        addItemWithMainPageItem(CameraActivity.class, this.getString(R.string.mainPage_Camera));
+        addItemWithMainPageItem(TouchActivity.class, this.getString(R.string.mainPage_TouchView));
+        addItemWithMainPageItem(HttpActivity.class, this.getString(R.string.mainPage_Http));
+        addItemWithMainPageItem(BluetoothSSPActivity.class, this.getString(R.string.mainPage_Bluetooth));
+        addItemWithMainPageItem(AIDLActivity.class, this.getString(R.string.mainPage_Aidl));
+        addItemWithMainPageItem(WifiActivity.class, this.getString(R.string.mainPage_Wifi));
 
-        MainPageItem webViewItem = new MainPageItem();
-        intent = new Intent().setClass(this, WebViewActivity.class);
-        webViewItem.setIntent(intent);
-        webViewItem.setName(this.getString(R.string.mainPage_WebBrowser));
-        items.add(webViewItem);
-
-        MainPageItem cameraItem = new MainPageItem();
-        intent = new Intent().setClass(this, CameraActivity.class);
-        cameraItem.setIntent(intent);
-        cameraItem.setName(this.getString(R.string.mainPage_Camera));
-        items.add(cameraItem);
-
-        MainPageItem touchItem = new MainPageItem();
-        intent = new Intent().setClass(this, TouchActivity.class);
-        touchItem.setIntent(intent);
-        touchItem.setName(this.getString(R.string.mainPage_TouchView));
-        items.add(touchItem);
-
-        MainPageItem httpItem = new MainPageItem();
-        intent = new Intent().setClass(this, HttpActivity.class);
-        httpItem.setIntent(intent);
-        httpItem.setName(this.getString(R.string.mainPage_Http));
-        items.add(httpItem);
-
-        MainPageItem bluetoothItem = new MainPageItem();
-        intent = new Intent().setClass(this, BluetoothSSPActivity.class);
-        bluetoothItem.setIntent(intent);
-        bluetoothItem.setName(this.getString(R.string.mainPage_Bluetooth));
-        items.add(bluetoothItem);
-
-        MainPageItem aidlItem = new MainPageItem();
-        intent = new Intent().setClass(this, AIDLActivity.class);
-        aidlItem.setIntent(intent);
-        aidlItem.setName(this.getString(R.string.mainPage_Aidl));
-        items.add(aidlItem);
         homeAdapter.notifyDataSetChanged();
+    }
+    private void addItemWithMainPageItem(Class<?> cls, String name) {
+        MainPageItem aidlItem = new MainPageItem();
+        Intent intent = new Intent().setClass(this, cls);
+        aidlItem.setIntent(intent);
+        aidlItem.setName(name);
+        items.add(aidlItem);
     }
 
     private HomeAdapter.OnHomeAdapterListener onHomeAdapterListener = new HomeAdapter.OnHomeAdapterListener() {
         @Override
         public void onItemClick(View view, int position) {
-            UtilLog.i(TAG, "onClick: item : " + position);
+            LogUtil.i(TAG, "onClick: item : " + position);
             startActivity(items.get(position).getIntent());
         }
 
         @Override
         public void onItemLongClick(View view, int position) {
-            UtilLog.i(TAG, "onLongClick: item : " + position);
+            LogUtil.i(TAG, "onLongClick: item : " + position);
         }
     };
 

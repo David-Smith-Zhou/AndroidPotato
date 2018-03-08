@@ -10,7 +10,7 @@ import android.view.View;
 import com.androidpotato.R;
 import com.androidpotato.camera.CameraOperator;
 import com.androidpotato.camera.CameraPreview;
-import com.androidpotato.mylibrary.util.UtilLog;
+import com.davidzhou.library.util.LogUtil;
 
 
 /**
@@ -26,7 +26,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.page_camera);
         int cameras = Camera.getNumberOfCameras();
-        UtilLog.i(TAG, "number of mCamera is: " + cameras);
+        LogUtil.i(TAG, "number of mCamera is: " + cameras);
         initViews();
     }
     private void initViews() {
@@ -38,7 +38,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
     private Camera.PreviewCallback callback = new Camera.PreviewCallback() {
         @Override
         public void onPreviewFrame(byte[] data, Camera camera) {
-            UtilLog.i(TAG, "go into onPreviewFrame");
+            LogUtil.i(TAG, "go into onPreviewFrame");
         }
     };
 

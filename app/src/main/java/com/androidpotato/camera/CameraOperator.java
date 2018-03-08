@@ -1,6 +1,7 @@
 package com.androidpotato.camera;
 
-import com.androidpotato.mylibrary.util.UtilLog;
+
+import com.davidzhou.library.util.LogUtil;
 
 /**
  * Created by David on 2017/7/4 0004.
@@ -24,25 +25,25 @@ public class CameraOperator {
         return cameraOperator;
     }
     public void startPreview() {
-        UtilLog.i(TAG, "startPreview");
+        LogUtil.i(TAG, "startPreview");
         cameraInterfaces.startPreview();
     }
     public void pausePreview() {
-        UtilLog.i(TAG, "pausePreview");
+        LogUtil.i(TAG, "pausePreview");
         cameraInterfaces.stopPreview();
     }
 
     public void resumePreview() {
-        UtilLog.i(TAG, "resumePreview");
+        LogUtil.i(TAG, "resumePreview");
         cameraInterfaces.startPreview();
     }
 
     public void stopPreview() {
-        UtilLog.i(TAG, "stopPreview");
+        LogUtil.i(TAG, "stopPreview");
         cameraInterfaces.stopPreview();
     }
     public void releasePreview() {
-        UtilLog.i(TAG, "releasePreview");
+        LogUtil.i(TAG, "releasePreview");
         cameraInterfaces.release();
     }
 

@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.androidpotato.R;
-import com.androidpotato.mylibrary.util.UtilLog;
+import com.davidzhou.library.util.LogUtil;
 
 
 /**
@@ -39,7 +39,7 @@ public class HttpActivity extends Activity {
                 .appendQueryParameter("package_name", "com.smit.terminalapp")
                 .appendQueryParameter("branch_code", "" + BRANCH_CODE);
         String url = builder.build().toString();
-        UtilLog.i(TAG, "url: " + url);
+        LogUtil.i(TAG, "url: " + url);
 
     }
 }

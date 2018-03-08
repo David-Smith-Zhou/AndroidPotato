@@ -1,4 +1,8 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="comm_padding">16dp</dimen>
+
+    <dimen name="dialog_text_size">20dp</dimen>
+    <dimen name="all_padding">10dp</dimen>
+    <dimen name="martin_top">10dp</dimen>
 </resources>

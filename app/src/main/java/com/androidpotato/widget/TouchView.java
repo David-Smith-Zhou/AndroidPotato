@@ -10,8 +10,8 @@ import android.view.View;
 import android.widget.Toast;
 
 
-import com.androidpotato.mylibrary.util.UtilLog;
 import com.androidpotato.widget.dto.Coordinate;
+import com.davidzhou.library.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -48,7 +48,7 @@ public class TouchView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        UtilLog.i(TAG, "onMeasure: width = " + getMeasuredWidth() + ", height = " + getMeasuredHeight());
+        LogUtil.i(TAG, "onMeasure: width = " + getMeasuredWidth() + ", height = " + getMeasuredHeight());
     }
 
     private void createCircles(Canvas canvas) {
@@ -92,7 +92,7 @@ public class TouchView extends View {
     }
     @Override
     protected void onDraw(Canvas canvas) {
-        UtilLog.i(TAG, "onDraw");
+        LogUtil.i(TAG, "onDraw");
         super.onDraw(canvas);
 //        paint.setColor(Color.YELLOW);
 //        canvas.drawRect(0, 0, getMeasuredWidth(), getMeasuredHeight(), paint);
@@ -115,7 +115,7 @@ public class TouchView extends View {
             double distance = Math.sqrt(Math.pow(disXAbs, 2) + Math.pow(disYAbs, 2));
             if (distance < RADIUS) {
                 iterator.remove();
-                UtilLog.i(TAG, "circleCenters size = " + circleCenters.size());
+                LogUtil.i(TAG, "circleCenters size = " + circleCenters.size());
                 invalidate();
                 break;
             }
@@ -138,12 +138,12 @@ public class TouchView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        UtilLog.i(TAG, "onTouchEvent: X = " + event.getX() + ", Y = " + event.getY());
+        LogUtil.i(TAG, "onTouchEvent: X = " + event.getX() + ", Y = " + event.getY());
 
         if (circleCenters.size() != 0) {
             checkDistance(event.getX(), event.getY());
         } else {
-            UtilLog.i(TAG, "onTouchEvent: no circles");
+            LogUtil.i(TAG, "onTouchEvent: no circles");
         }
         super.onTouchEvent(event);
         return true;

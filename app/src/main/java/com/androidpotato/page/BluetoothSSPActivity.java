@@ -17,10 +17,10 @@ import android.widget.Toast;
 
 import com.androidpotato.R;
 import com.androidpotato.adapter.BtSSPDeviceAdapter;
-import com.androidpotato.mylibrary.bluetooth.BluetoothBase;
-import com.androidpotato.mylibrary.bluetooth.BluetoothSSP;
-import com.androidpotato.mylibrary.util.UtilLog;
-import com.androidpotato.mylibrary.util.UtilToast;
+import com.davidzhou.library.communication.bluetooth.BluetoothBase;
+import com.davidzhou.library.communication.bluetooth.BluetoothSSP;
+import com.davidzhou.library.util.LogUtil;
+import com.davidzhou.library.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +94,7 @@ public class BluetoothSSPActivity extends AppCompatActivity implements View.OnCl
         public void onFind(List<BluetoothDevice> bluetoothDevices, BluetoothDevice device, int rssi) {
             if (!devices.contains(device)) {
                 devices.add(device);
-                UtilLog.i(TAG, "devices = " + devices.size());
+                LogUtil.i(TAG, "devices = " + devices.size());
                 adapter.notifyDataSetChanged();
             }
         }
@@ -128,6 +128,16 @@ public class BluetoothSSPActivity extends AppCompatActivity implements View.OnCl
         public void onUpdateDeviceRssi(BluetoothDevice device, short rssi) {
 
         }
+
+        @Override
+        public void onBluetoothDisabled() {
+
+        }
+
+        @Override
+        public void onBluetoothEnabled() {
+
+        }
     };
 
     @Override
@@ -135,11 +145,11 @@ public class BluetoothSSPActivity extends AppCompatActivity implements View.OnCl
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case OPEN_BLUETOOTH_CODE:
-                UtilLog.i(TAG, "go into OPEN_BLUETOOTH_CODE" + ", resultCode = " + resultCode);
+                LogUtil.i(TAG, "go into OPEN_BLUETOOTH_CODE" + ", resultCode = " + resultCode);
                 if (resultCode == Activity.RESULT_OK) {
-                    UtilToast.ToastShort(this, "用户允许使用蓝牙");
+                    ToastUtil.ToastShort(this, "用户允许使用蓝牙");
                 } else {
-                    UtilToast.ToastShort(this, "用户拒绝使用蓝牙");
+                    ToastUtil.ToastShort(this, "用户拒绝使用蓝牙");
                 }
                 break;
             default:
@@ -151,7 +161,7 @@ public class BluetoothSSPActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bluetooth_ssp_scan_btn:
-                UtilLog.i(TAG, "scan");
+                LogUtil.i(TAG, "scan");
                 bluetoothBase.scan();
                 break;
             case R.id.bluetooth_ssp_disconnect_btn:

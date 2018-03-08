@@ -6,7 +6,8 @@ import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.androidpotato.mylibrary.util.UtilLog;
+
+import com.davidzhou.library.util.LogUtil;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -40,7 +41,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     public void surfaceCreated(SurfaceHolder holder) {
         int height = getMeasuredHeight();
         int width = getMeasuredWidth();
-        UtilLog.i(TAG, "get height = " + height + ", width = " + width  + ", ratio = " + new DecimalFormat("##.##").format(height / (double)width));
+        LogUtil.i(TAG, "get height = " + height + ", width = " + width  + ", ratio = " + new DecimalFormat("##.##").format(height / (double)width));
         cameraInterfaces.setCameraParameters(getContext(), width, height);
         try {
             cameraInterfaces.setPreviewDisplay(holder);

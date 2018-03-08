@@ -12,6 +12,7 @@
     <string name="mainPage_Http">Http</string>
     <string name="mainPage_Bluetooth">蓝牙</string>
     <string name="mainPage_Aidl">AIDL</string>
+    <string name="mainPage_Wifi">Wifi</string>
 
     <!-- bluetooth ssp -->
     <string name="bluetooth_scan">扫描</string>
