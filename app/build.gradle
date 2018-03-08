@@ -22,6 +22,11 @@ android {
             }
         }
         debug {
+            android.applicationVariants.all { variant ->
+                variant.outputs.all {
+                    outputFileName = "AndroidPotato-V${defaultConfig.versionName}-${buildDate()}-Debug.apk"
+                }
+            }
         }
     }
     productFlavors {
