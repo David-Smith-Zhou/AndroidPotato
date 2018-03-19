@@ -12,14 +12,15 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.support.annotation.Nullable;
 
+import com.androidpotato.R;
 import com.androidpotato.page.wifi.adapter.ScanResultInfo;
 import com.androidpotato.page.wifi.interfaces.OnWifiEventsListener;
 import com.androidpotato.page.wifi.widget.wifi.BaseWifiConnectDialog;
 import com.androidpotato.page.wifi.widget.wifi.WifiConnectDialogFactory;
-import com.davidzhou.library.R;
+
 import com.davidzhou.library.util.LogUtil;
 import com.davidzhou.library.util.ToastUtil;
-import com.davidzhou.library.util.WifiUtil;
+import com.androidpotato.utils.WifiUtil;
 
 import java.util.List;
 

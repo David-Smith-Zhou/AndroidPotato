@@ -13,6 +13,8 @@
     <string name="mainPage_Bluetooth">蓝牙</string>
     <string name="mainPage_Aidl">AIDL</string>
     <string name="mainPage_Wifi">Wifi</string>
+    <string name="mainPage_Socket">Socket测试</string>
+    <string name="mainPage_Map">百度地图学习</string>
 
     <!-- bluetooth ssp -->
     <string name="bluetooth_scan">扫描</string>
@@ -26,4 +28,57 @@
 
 
     <string name="touchText">触摸坐标x:%1$f, y:%2$f</string>
+
+
+    <!-- wifi -->
+    <!-- wifi settings -->
+    <string name="wifiSettings">Wifi设置</string>
+    <string name="noFoundHint">Ops，抱歉没有找到任何设备，请尝试重新搜索</string>
+    <string name="loading">加载中，请稍等......</string>
+    <string name="updateFinished">更新完毕</string>
+
+    <!-- wifi item -->
+    <string name="item_name">名称: %1$s</string>
+    <string name="item_mac">BSSID: %1$s</string>
+    <string name="item_rssi_str">%1$s: %2$s</string>
+    <string name="item_rssi_level_low">弱</string>
+    <string name="item_rssi_level_middle">中等</string>
+    <string name="item_rssi_level_high">强</string>
+    <string name="item_auth_type_str">%1$s:    %2$s</string>
+
+    <string name="auth_type">安全性</string>
+    <string name="rssi">信号强度</string>
+    <string name="connect">连接</string>
+    <string name="disconnect">断开</string>
+    <string name="cancel">取消</string>
+    <string name="password">密码</string>
+    <string name="show_password">显示密码</string>
+    <string name="key_index">密钥索引</string>
+
+    <string name="wifi_protocol_wpa">WPA</string>
+    <string name="wifi_protocol_wpa2">WPA2</string>
+    <string name="wifi_protocol_wps">WPS</string>
+    <string name="wifi_protocol_wep">WEP</string>
+    <string name="wifi_protocol_none">未加密</string>
+
+    <string name="menu_wps_title">WPS 按钮</string>
+    <string name="menu_wps_with_pin_title">WPS PIN输入</string>
+
+    <string name="hint_no_suport_wps">暂不支持WPS连接，请更换其他加密协议的Wifi连接，谢谢</string>
+    <string name="hint_wps_btn">请按下您路由器上的WLAN保护设置按钮，它可能会标为“WPS”或者包含此符号：</string>
+    <string name="hint_wps_pin">请在WLAN路由器上输入PIN%1$s。设置过程最多可能需要两分钟时间才能完成。</string>
+    <string name="hint_wps_failure">无法开启WPS，请过几分钟后重试</string>
+
+    <string name="result_connected">连接成功</string>
+    <string name="result_obtant_ip_addr">获取IP地址中</string>
+    <string name="result_authenticating">身份认证中</string>
+    <string name="result_connect_failure">连接失败，请重试</string>
+
+    <string name="wifi_status_connected">已连接</string>
+    <string name="wifi_status_saved">已保存</string>
+
+    <!-- wifi editor -->
+    <string name="wifi_editor_no_saving">不保存</string>
+    <string name="wifi_deitor_speed">传输速度: %1$dMbps</string>
+
 </resources>

@@ -1,11 +1,11 @@
-package com.davidzhou.library.util;
+package com.androidpotato.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.davidzhou.library.R;
+import com.androidpotato.R;
 
 
 /**

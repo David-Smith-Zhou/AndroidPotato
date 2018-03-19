@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.androidpotato.R;
 import com.davidzhou.library.util.LogUtil;
-import com.davidzhou.library.util.WifiUtil;
+import com.androidpotato.utils.WifiUtil;
 
 
 /**

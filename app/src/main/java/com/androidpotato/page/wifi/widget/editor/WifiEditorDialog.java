@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.androidpotato.R;
 import com.androidpotato.page.wifi.adapter.ScanResultInfo;
-import com.davidzhou.library.util.WifiUtil;
+import com.androidpotato.utils.WifiUtil;
 
 
 /**

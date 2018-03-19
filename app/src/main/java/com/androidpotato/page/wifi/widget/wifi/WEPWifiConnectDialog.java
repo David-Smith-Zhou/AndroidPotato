@@ -19,7 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.androidpotato.R;
-import com.davidzhou.library.util.WifiUtil;
+import com.androidpotato.utils.WifiUtil;
 
 import java.util.ArrayList;
 import java.util.List;
