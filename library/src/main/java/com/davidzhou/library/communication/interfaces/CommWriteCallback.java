@@ -5,5 +5,5 @@ package com.davidzhou.library.communication.interfaces;
  */
 
 public interface CommWriteCallback {
-    void onWrite(byte[] data);
+    void write(byte[] data);
 }

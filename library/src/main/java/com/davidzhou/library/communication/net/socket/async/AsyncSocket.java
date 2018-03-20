@@ -42,7 +42,7 @@ public class AsyncSocket extends BaseSocket {
     }
 
     @Override
-    public void onWrite(byte[] data) {
+    public void write(byte[] data) {
         if (isConnected()) {
             mAsyncCheckThread.send(data);
         }

@@ -16,7 +16,7 @@ public class SyncSocket extends BaseSocket {
     }
 
     @Override
-    public void onWrite(byte[] data) {
+    public void write(byte[] data) {
 
     }
 
