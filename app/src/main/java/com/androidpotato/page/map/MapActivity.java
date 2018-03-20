@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.androidpotato.R;
 import com.baidu.mapapi.SDKInitializer;
@@ -30,6 +32,8 @@ public class MapActivity extends AppCompatActivity {
     private MapView mapView;
     private LocationManager locationManager;
     private double longitude = 113.960471, latitude = 22.546178;
+    private Button checkBtn;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +45,7 @@ public class MapActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
     }
+
     private void init() {
         mapView = findViewById(R.id.mapView);
         showInMap(latitude, longitude);
@@ -53,9 +58,29 @@ public class MapActivity extends AppCompatActivity {
                     showInMap(latitude, longitude);
                 }
             }
+
+            @Override
+            public void onRequest() {
+                checkBtn.setEnabled(false);
+
+            }
+
+            @Override
+            public void onResponse(double longitude, double latitude) {
+                checkBtn.setEnabled(true);
+                showInMap(latitude, longitude);
+            }
+        });
+        checkBtn = findViewById(R.id.map_check_btn);
+        checkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                locationManager.send();
+            }
         });
         locationManager.connect();
     }
+
     private boolean needUpdate(double longitude, double latitude) {
         if (!(this.longitude == longitude && this.latitude == latitude)) {
             this.latitude = latitude;
@@ -70,6 +95,7 @@ public class MapActivity extends AppCompatActivity {
 
     private void showInMap(double latitude, double longitude) {
         BaiduMap map = mapView.getMap();
+        map.clear();
         LatLng location = new LatLng(latitude, longitude);
         MapStatus mapStatus = new MapStatus.Builder()
                 .target(location)
@@ -83,6 +109,7 @@ public class MapActivity extends AppCompatActivity {
                 .icon(bitmap);
         map.addOverlay(overlayOptions);
     }
+
     @Override
     protected void onPause() {
         super.onPause();
