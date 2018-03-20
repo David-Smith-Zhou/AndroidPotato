@@ -80,5 +80,8 @@
     <!-- wifi editor -->
     <string name="wifi_editor_no_saving">不保存</string>
     <string name="wifi_deitor_speed">传输速度: %1$dMbps</string>
+    
+    <!-- map -->
+    <string name="map_locate">定位</string>
 
 </resources>
