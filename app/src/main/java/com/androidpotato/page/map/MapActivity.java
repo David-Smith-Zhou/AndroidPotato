@@ -52,11 +52,16 @@ public class MapActivity extends AppCompatActivity {
         locationManager = new LocationManager();
         locationManager.setOnLocationUpdateCallback(new LocationManager.OnLocationUpdateCallback() {
             @Override
-            public void onUpdate(double longitude, double latitude) {
-                if (needUpdate(longitude, latitude)) {
-                    LogUtil.i(TAG, "need update");
-                    showInMap(latitude, longitude);
-                }
+            public void onUpdate(final double longitude, final double latitude) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (needUpdate(longitude, latitude)) {
+                            LogUtil.i(TAG, "need update");
+                            showInMap(latitude, longitude);
+                        }
+                    }
+                });
             }
 
             @Override
@@ -66,9 +71,19 @@ public class MapActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onResponse(double longitude, double latitude) {
-                checkBtn.setEnabled(true);
-                showInMap(latitude, longitude);
+            public void onResponse(final double longitude, final double latitude) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        checkBtn.setEnabled(true);
+                        showInMap(latitude, longitude);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String msg) {
+                ToastUtil.ToastShort(MapActivity.this, msg);
             }
         });
         checkBtn = findViewById(R.id.map_check_btn);

@@ -15,6 +15,7 @@
     <string name="mainPage_Wifi">Wifi</string>
     <string name="mainPage_Socket">Socket测试</string>
     <string name="mainPage_Map">百度地图学习</string>
+    <string name="mainPage_AsyncTaskTest">AsyncTaskTest</string>
 
     <!-- bluetooth ssp -->
     <string name="bluetooth_scan">扫描</string>

@@ -1,5 +1,7 @@
 package com.androidpotato.page.map;
 
+import android.os.AsyncTask;
+
 import com.davidzhou.library.communication.common.comminfos.CommInfo;
 import com.davidzhou.library.communication.common.comminfos.EthernetInfo;
 import com.davidzhou.library.communication.common.dto.BaseDataInfo;
@@ -11,13 +13,19 @@ import com.davidzhou.library.util.LogUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
 import java.util.Arrays;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by David on 2018/3/19 0019.
  */
 
 public class LocationManager {
+    private static final String TRANSLATE_URL = "http://api.map.baidu.com/geoconv/v1/";
     private static final String address = "119.29.162.110";
     private static final int port = 1236;
     private static final String TAG = "LocationManager";
@@ -30,6 +38,7 @@ public class LocationManager {
     private static final String TYPE_REPORT = "report-dev-callback";
     private AsyncSocket mSocket;
     private OnLocationUpdateCallback onLocationUpdateCallback;
+    private boolean isCheck = false;
 
 
     public LocationManager() {
@@ -39,6 +48,7 @@ public class LocationManager {
         mSocket = new AsyncSocket(info);
         mSocket.setCommMainMsgHandlerCallback(commMainMsgHandlerCallback);
     }
+
     public void send() {
         try {
             JSONObject jsonObject = new JSONObject();
@@ -47,6 +57,7 @@ public class LocationManager {
             params.put("GPS01", "123");
             jsonObject.put("params", params);
             mSocket.write(jsonObject.toString().getBytes());
+            isCheck = true;
             if (onLocationUpdateCallback != null) {
                 onLocationUpdateCallback.onRequest();
             }
@@ -55,12 +66,15 @@ public class LocationManager {
         }
 //        mSocket.write();
     }
+
     public void connect() {
         mSocket.connect();
     }
+
     public void disconnect() {
         mSocket.disconnect();
     }
+
     private CommMainMsgHandlerCallback commMainMsgHandlerCallback = new CommMainMsgHandlerCallback() {
         @Override
         public void onConnect() {
@@ -96,6 +110,7 @@ public class LocationManager {
             LogUtil.d(TAG, "onError");
         }
     };
+
     private void parseResponseData(String responseStr) {
         LogUtil.d(TAG, "parseResponseData: " + responseStr);
         try {
@@ -113,18 +128,28 @@ public class LocationManager {
             longitudeStr = dataSplit[3];
             latitudeStr = dataSplit[1];
             if (!EMPTY_STR.equals(latitudeStr) && !EMPTY_STR.equals(longitudeStr)) {
-                double longitude = (Double.valueOf(longitudeStr)) / 100;
-                double latitude = (Double.valueOf(latitudeStr)) / 100;
-                LogUtil.i(TAG,"longitude: " + longitude + ",latitude: " + latitude);
-                if (onLocationUpdateCallback != null) {
-                    onLocationUpdateCallback.onResponse(longitude, latitude);
-                }
+                double longitude = getBaiduMapLocation(Double.valueOf(longitudeStr));
+                double latitude = getBaiduMapLocation(Double.valueOf(latitudeStr));
+
+//                double longitude = Double.valueOf(longitudeStr);
+//                double latitude = Double.valueOf(latitudeStr);
+//                translate(longitude, latitude);
+                MyAsyncTask task = new MyAsyncTask(this);
+                task.execute(longitude, latitude);
+
+//                LogUtil.i(TAG,"longitude: " + longitude + ",latitude: " + latitude);
+//                if (onLocationUpdateCallback != null) {
+//                    onLocationUpdateCallback.onResponse(longitude, latitude);
+//                }
+            } else {
+                callOnErrorCallback("地址信息为空");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     private void parseReportData(String receiveStr) {
         LogUtil.d(TAG, "parseReportData: " + receiveStr);
         try {
@@ -135,15 +160,7 @@ public class LocationManager {
                 if (CUSTOM_DATA_TAG.equals(tmpObj.getString(SERVICE_ID_TAG))) {
                     JSONObject dataObj = new JSONObject(tmpObj.getString(SERVICE_DATA_TAG));
                     String data = dataObj.getString(GPIO_TAG);
-                    LogUtil.i(TAG, "data: " +data);
-                    // $GPGLL,2232.4696,N,11356.7755,E,031005.000,A,A*52
-//                    String regex = "$GPGLL,(.),(.),(.),(.),(.)";
-//                    Pattern p = Pattern.compile(regex);
-//                    Matcher matcher = p.matcher(data);
-//                    if (matcher.find()) {
-//                        LogUtil.i(TAG, "find: " +data);
-//
-//                    }
+                    LogUtil.i(TAG, "data: " + data);
                     String[] dataSplit = data.split(",");
                     LogUtil.i(TAG, "dataSplit: " + Arrays.toString(dataSplit));
                     String longitudeStr // 经度
@@ -151,12 +168,18 @@ public class LocationManager {
                     longitudeStr = dataSplit[3];
                     latitudeStr = dataSplit[1];
                     if (!EMPTY_STR.equals(latitudeStr) && !EMPTY_STR.equals(longitudeStr)) {
-                        double longitude = (Double.valueOf(longitudeStr)) / 100;
-                        double latitude = (Double.valueOf(latitudeStr)) / 100;
-                        LogUtil.i(TAG,"longitude: " + longitude + ",latitude: " + latitude);
-                        if (onLocationUpdateCallback != null) {
-                            onLocationUpdateCallback.onUpdate(longitude, latitude);
-                        }
+                        double longitude = getBaiduMapLocation(Double.valueOf(longitudeStr));
+                        double latitude = getBaiduMapLocation(Double.valueOf(latitudeStr));
+
+
+//                        double longitude = Double.valueOf(longitudeStr);
+//                        double latitude = Double.valueOf(latitudeStr);
+//                        translate(longitude, latitude);
+                        MyAsyncTask task = new MyAsyncTask(this);
+                        task.execute(longitude, latitude);
+
+                    } else {
+                        callOnErrorCallback("地址信息为空");
                     }
                 }
             }
@@ -165,13 +188,115 @@ public class LocationManager {
         }
     }
 
+    private void callOnErrorCallback(String msg) {
+        if (onLocationUpdateCallback != null) {
+            onLocationUpdateCallback.onError(msg);
+        }
+    }
+    private void useOKHttp(double longitude, double latitude) {
+        try {
+            String address = "http://api.map.baidu.com/geoconv/v1/?" +
+                    "coords=" + longitude + "," + latitude + "&from=1&to=5" +
+                    "&mcode=3B:9D:6E:18:00:F2:89:95:F1:BC:D4:CF:86:C2:F8:3A:21:AE:64:AC;com.androidpotato" +
+                    "&ak=3H7yalkLbGG13xMiLRwfCClV";
+            LogUtil.i(TAG, "useOKHttp: address: " + address);
+            OkHttpClient okHttpClient = new OkHttpClient();
+            Request request = new Request.Builder().url(address).build();
+            Response response = okHttpClient.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String resultStr = response.body().string();
+                LogUtil.i(TAG, "useOKHttp: result: " + resultStr);
+                try {
+                    JSONObject jsonObject = new JSONObject(resultStr);
+                    int status = jsonObject.getInt("status");
+                    if (0 == status) {
+                        JSONArray array = jsonObject.getJSONArray("result");
+                        JSONObject result = array.getJSONObject(0);
+                        double longitudeRes = result.getDouble("x");
+                        double latitudeRes = result.getDouble("y");
+                        LogUtil.i(TAG, "longitude: " + longitudeRes + ",latitude: " + latitudeRes);
+                        if (onLocationUpdateCallback != null) {
+                            if (isCheck) {
+                                isCheck = false;
+                                onLocationUpdateCallback.onResponse(longitudeRes, latitudeRes);
+                            } else {
+                                onLocationUpdateCallback.onUpdate(longitudeRes, latitudeRes);
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private double getBaiduMapLocation(final double value) {
+        LogUtil.i(TAG, "value: " + value);
+        double tail = value % 100;
+        LogUtil.i(TAG, "tail: " + tail);
+        double head = value - tail;
+        LogUtil.i(TAG, "head: " + head);
+        return head / 100 + tail / 60;
+    }
+
     public interface OnLocationUpdateCallback {
         void onUpdate(double longitude, double latitude);
+
         void onRequest();
+
         void onResponse(double longitude, double latitude);
+
+        void onError(String msg);
     }
 
     public void setOnLocationUpdateCallback(OnLocationUpdateCallback onLocationUpdateCallback) {
         this.onLocationUpdateCallback = onLocationUpdateCallback;
+    }
+
+    static class MyAsyncTask extends AsyncTask {
+        private WeakReference<LocationManager> weakReference;
+
+        public MyAsyncTask(LocationManager locationManager) {
+            weakReference = new WeakReference<LocationManager>(locationManager);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            LogUtil.i(TAG, "onPreExecute: ");
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            LogUtil.i(TAG, "doInBackground: " + objects);
+            LocationManager locationManager = weakReference.get();
+            if (locationManager == null) {
+                return null;
+            }
+            locationManager.useOKHttp((double) objects[0], (double) objects[1]);
+
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Object[] values) {
+            LogUtil.i(TAG, "onProgressUpdate: " + values);
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            LogUtil.i(TAG, "onPostExecute: " + o);
+            super.onPostExecute(o);
+        }
+
+        @Override
+        protected void onCancelled() {
+            LogUtil.i(TAG, "onCancelled: ");
+            super.onCancelled();
+        }
     }
 }

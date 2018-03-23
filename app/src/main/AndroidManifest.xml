@@ -57,7 +57,13 @@
         <activity android:name=".page.CameraActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".page.HttpActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".page.TimeCounterActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".page.BluetoothSSPActivity"
@@ -72,11 +78,19 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".page.map.MapActivity"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity android:name=".page.AsyncTaskTestActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
 
         <service android:name=".services.AIDLService"

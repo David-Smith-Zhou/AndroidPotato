@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity{
         addItemWithMainPageItem(WifiActivity.class, this.getString(R.string.mainPage_Wifi));
 //        addItemWithMainPageItem(SocketActivity.class, this.getString(R.string.mainPage_Socket));
         addItemWithMainPageItem(MapActivity.class, getString(R.string.mainPage_Map));
+        addItemWithMainPageItem(AsyncTaskTestActivity.class, getString(R.string.mainPage_AsyncTaskTest));
         homeAdapter.notifyDataSetChanged();
     }
     private void addItemWithMainPageItem(Class<?> cls, String name) {
