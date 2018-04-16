@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity{
         init();
     }
     private void init() {
-        initView();
+        recyclerView = (RecyclerView) this.findViewById(R.id.mainPage_RecyclerView);
         items = new ArrayList<>();
         homeAdapter = new HomeAdapter(MainActivity.this, items);
         homeAdapter.setOnHomeAdapterListener(onHomeAdapterListener);
@@ -46,23 +46,17 @@ public class MainActivity extends AppCompatActivity{
         recyclerView.setAdapter(homeAdapter);
         initData();
     }
-    private void initView() {
-        recyclerView = (RecyclerView) this.findViewById(R.id.mainPage_RecyclerView);
-
-    }
 
     private void initData() {
-//        addItemWithMainPageItem(TimeCounterActivity.class, this.getString(R.string.mainPage_Counter));
-//        addItemWithMainPageItem(WebViewActivity.class, this.getString(R.string.mainPage_WebBrowser));
         addItemWithMainPageItem(CameraActivity.class, this.getString(R.string.mainPage_Camera));
         addItemWithMainPageItem(TouchActivity.class, this.getString(R.string.mainPage_TouchView));
-//        addItemWithMainPageItem(HttpActivity.class, this.getString(R.string.mainPage_Http));
+        addItemWithMainPageItem(HttpActivity.class, this.getString(R.string.mainPage_Http));
         addItemWithMainPageItem(BluetoothSSPActivity.class, this.getString(R.string.mainPage_Bluetooth));
 //        addItemWithMainPageItem(AIDLActivity.class, this.getString(R.string.mainPage_Aidl));
         addItemWithMainPageItem(WifiActivity.class, this.getString(R.string.mainPage_Wifi));
 //        addItemWithMainPageItem(SocketActivity.class, this.getString(R.string.mainPage_Socket));
         addItemWithMainPageItem(MapActivity.class, getString(R.string.mainPage_Map));
-        addItemWithMainPageItem(AsyncTaskTestActivity.class, getString(R.string.mainPage_AsyncTaskTest));
+        addItemWithMainPageItem(TestActivity.class, getString(R.string.mainPage_Test));
         homeAdapter.notifyDataSetChanged();
     }
     private void addItemWithMainPageItem(Class<?> cls, String name) {

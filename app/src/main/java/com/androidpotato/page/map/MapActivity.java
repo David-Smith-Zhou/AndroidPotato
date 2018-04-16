@@ -138,6 +138,12 @@ public class MapActivity extends AppCompatActivity {
     }
 
     @Override
+    public void finish() {
+        super.finish();
+        locationManager.disconnect();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
