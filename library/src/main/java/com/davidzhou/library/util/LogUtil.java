@@ -2,6 +2,8 @@ package com.davidzhou.library.util;
 
 import android.util.Log;
 
+import java.util.Locale;
+
 /**
  * Created by David on 2017/5/4 0004.
  */
@@ -73,21 +75,26 @@ public class LogUtil {
         System.out.print("[" + level + "][" + tag + "]: " + msg + '\n');
     }
     private static void logToLogCat(int level, String tag, String msg) {
+        String fmt = "[Thread id: %1$d, name- %2$s]: %3$s";
+        String data = String.format(Locale.getDefault(), fmt,
+                Thread.currentThread().getId(),
+                Thread.currentThread().getName(),
+                msg);
         switch (level) {
             case LEVLE_DEBUG:
-                Log.d(tag, msg);
+                Log.d(tag, data);
                 break;
             case LEVLE_ERROR:
-                Log.e(tag, msg);
+                Log.e(tag, data);
                 break;
             case LEVLE_INFO:
-                Log.i(tag, msg);
+                Log.i(tag, data);
                 break;
             case LEVLE_WARING:
-                Log.w(tag, msg);
+                Log.w(tag, data);
                 break;
             default:
-                Log.i(tag, msg);
+                Log.i(tag, data);
                 break;
         }
     }

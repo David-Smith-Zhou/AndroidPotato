@@ -90,7 +90,7 @@
             <!--</intent-filter>-->
         </activity>
         <activity
-            android:name=".page.TestActivity"
+            android:name=".page.test.TestActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -107,7 +107,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </service>
-
+        <service android:name=".page.test.MyIntentService" />
     </application>
 
 </manifest>

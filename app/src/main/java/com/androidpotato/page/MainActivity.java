@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +14,7 @@ import com.androidpotato.R;
 import com.androidpotato.adapter.HomeAdapter;
 import com.androidpotato.dto.MainPageItem;
 import com.androidpotato.page.map.MapActivity;
+import com.androidpotato.page.test.TestActivity;
 import com.androidpotato.page.wifi.WifiActivity;
 import com.davidzhou.library.util.LogUtil;
 

@@ -1,20 +1,26 @@
-package com.androidpotato.page;
+package com.androidpotato.page.test;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.HandlerThread;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.androidpotato.R;
 import com.davidzhou.library.util.LogUtil;
 
-import java.util.Locale;
 
 /**
  * Created by David on 2018/3/27 0027.
@@ -22,9 +28,13 @@ import java.util.Locale;
 
 public class TestActivity extends AppCompatActivity {
     private static final String TAG = "TestActivity";
+    public static final String LOCAL_ACTION = "local_action_test";
     private static final int MSG_WORK = 0x01;
     private static final int MSG_MAIN = 0x02;
     private Handler handler;
+    private ScrollView scrollView;
+    private TextView textView;
+    private LocalBroadcastManager localBroadcastManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,6 +48,9 @@ public class TestActivity extends AppCompatActivity {
         toolbar.setTitle(getString(R.string.mainPage_Test));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        scrollView = this.findViewById(R.id.test_scrollView);
+        textView = this.findViewById(R.id.test_textView);
+        registerBroadcast();
 
         TestHandlerThread handlerThread = new TestHandlerThread("TestHandlerThread");
         handlerThread.start();
@@ -47,13 +60,13 @@ public class TestActivity extends AppCompatActivity {
                 super.handleMessage(msg);
                 switch (msg.what) {
                     case MSG_WORK:
-                        showMsg("MSG_WORK");
+                        LogUtil.i(TAG, "MSG_WORK");
                         break;
                     case MSG_MAIN:
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                showMsg("MSG_MAIN");
+                                LogUtil.i(TAG, "MSG_MAIN");
                             }
                         });
                         break;
@@ -87,16 +100,43 @@ public class TestActivity extends AppCompatActivity {
                 }).start();
             }
         });
+        testBtn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showMsg("WTF");
+                Intent intent = new Intent(TestActivity.this, MyIntentService.class);
+                startService(intent);
+            }
+        });
     }
+    private void registerBroadcast() {
+        localBroadcastManager = LocalBroadcastManager.getInstance(this);
+        IntentFilter intentFilter = new IntentFilter(LOCAL_ACTION);
+        localBroadcastManager.registerReceiver(broadcastReceiver, intentFilter);
+    }
+    private void unRegisterBroadcast() {
+        localBroadcastManager.unregisterReceiver(broadcastReceiver);
+    }
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null
+                    && intent.getAction() != null
+                    && intent.getAction().equals(LOCAL_ACTION)) {
+                showMsg(intent.getExtras().getString("msg"));
+            }
+        }
+    };
 
     private void showMsg(String msg) {
-        String fmt = "[Thread id- %1$d, Thread name- %2$s]: %3$s";
-        String data = String.format(Locale.getDefault(), fmt,
-                Thread.currentThread().getId(),
-                Thread.currentThread().getName(),
-                msg);
-        LogUtil.i(TAG, data);
+        if (textView.getHeight() > 1024) {
+            textView.setText("");
+        }
+        textView.append(msg + "\n");
+        scrollView.fullScroll(View.FOCUS_DOWN);
+        LogUtil.i(TAG, msg);
     }
+
 
     public class TestHandlerThread extends HandlerThread {
         public TestHandlerThread(String name) {
@@ -107,6 +147,12 @@ public class TestActivity extends AppCompatActivity {
             super(name, priority);
         }
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unRegisterBroadcast();
     }
 
     @Override
