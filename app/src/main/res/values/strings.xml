@@ -89,5 +89,11 @@
     <string name="test_btn_1">Button1</string>
     <string name="test_btn_2">Button2</string>
     <string name="test_btn_3">Button3</string>
+    <string name="test_btn_4">Button4</string>
+    <string name="test_btn_5">Button5</string>
+    <string name="test_btn_6">Button6</string>
+    <string name="test_btn_7">Button7</string>
+    <string name="test_btn_8">Button8</string>
+    <string name="test_btn_9">Button9</string>
 
 </resources>

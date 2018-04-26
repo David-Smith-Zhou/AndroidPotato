@@ -19,14 +19,29 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.androidpotato.R;
+import com.davidzhou.library.features.JniFeature;
 import com.davidzhou.library.util.LogUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 
 /**
  * Created by David on 2018/3/27 0027.
  */
 
-public class TestActivity extends AppCompatActivity {
+public class TestActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "TestActivity";
     public static final String LOCAL_ACTION = "local_action_test";
     private static final int MSG_WORK = 0x01;
@@ -35,7 +50,7 @@ public class TestActivity extends AppCompatActivity {
     private ScrollView scrollView;
     private TextView textView;
     private LocalBroadcastManager localBroadcastManager;
-
+    private ExecutorService executor;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,12 +90,14 @@ public class TestActivity extends AppCompatActivity {
                 }
             }
         };
-        Button testBtn1 = findViewById(R.id.test_testBtn_1);
-        Button testBtn2 = findViewById(R.id.test_testBtn_2);
-        Button testBtn3 = findViewById(R.id.test_testBtn_3);
-        testBtn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+
+        executor = Executors.newScheduledThreadPool(1);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.test_testBtn_1: {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -88,10 +105,8 @@ public class TestActivity extends AppCompatActivity {
                     }
                 }).start();
             }
-        });
-        testBtn2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            break;
+            case R.id.test_testBtn_2: {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -99,24 +114,84 @@ public class TestActivity extends AppCompatActivity {
                     }
                 }).start();
             }
-        });
-        testBtn3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            break;
+            case R.id.test_testBtn_3: {
                 showMsg("WTF");
                 Intent intent = new Intent(TestActivity.this, MyIntentService.class);
                 startService(intent);
             }
-        });
+            break;
+            case R.id.test_testBtn_4: {
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        LogUtil.i(TAG, "before sleep");
+                        try {
+                            Thread.sleep(2000);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        LogUtil.i(TAG, "after sleep");
+                    }
+                });
+            }
+            break;
+            case R.id.test_testBtn_5: {
+                ScheduledFuture<?> scheduledFuture = ((ScheduledExecutorService) executor).scheduleAtFixedRate(runnable,
+                        0,
+                        2,
+                        TimeUnit.SECONDS);
+            }
+            break;
+            case R.id.test_testBtn_6: {
+                executor.shutdown();
+            }
+            break;
+            case R.id.test_testBtn_7: {
+                LogUtil.i(TAG, "I get: " + JniFeature.getRandom());
+                LogUtil.i(TAG, JniFeature.getFormatString("123"));
+            }
+            break;
+            default:
+                break;
+        }
     }
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            LogUtil.i(TAG, "before sleep");
+            try {
+                Thread.sleep(2000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            LogUtil.i(TAG, "after sleep");
+        }
+    };
+    private Callable<Integer> callable = new Callable<Integer>() {
+        @Override
+        public Integer call() throws Exception {
+            LogUtil.i(TAG, "before sleep");
+            try {
+                Thread.sleep(2000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            LogUtil.i(TAG, "after sleep");
+            return 1;
+        }
+    };
+
     private void registerBroadcast() {
         localBroadcastManager = LocalBroadcastManager.getInstance(this);
         IntentFilter intentFilter = new IntentFilter(LOCAL_ACTION);
         localBroadcastManager.registerReceiver(broadcastReceiver, intentFilter);
     }
+
     private void unRegisterBroadcast() {
         localBroadcastManager.unregisterReceiver(broadcastReceiver);
     }
+
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -146,7 +221,6 @@ public class TestActivity extends AppCompatActivity {
         public TestHandlerThread(String name, int priority) {
             super(name, priority);
         }
-
     }
 
     @Override

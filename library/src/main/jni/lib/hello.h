@@ -1,0 +1,5 @@
+#ifndef ANDROIDPOTATO_HELLO_H
+#define ANDROIDPOTATO_HELLO_H
+
+int say_hello(void);
+#endif //ANDROIDPOTATO_HELLO_H
