@@ -19,6 +19,8 @@ add_library( # Sets the name of the library.AndroidStudio开始支持Cmake了，
              # Associated headers in the same location as their source
              # file are automatically included.对应的C文件的目录位置
              src/main/jni/util/test.c
+             src/main/jni/util/log.c
+             src/main/jni/util/c_log.h
              src/main/jni/lib/hello.c
              src/main/jni/middleware/mw_util_test.c
              )
