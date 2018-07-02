@@ -5,11 +5,10 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BaseTransientBottomBar;
 
 import com.androidpotato.aidl.Book;
 import com.androidpotato.aidl.BookManager;
-import com.davidzhou.library.util.LogUtil;
+import com.davidzhou.library.util.ULog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +35,7 @@ public class AIDLService extends Service {
         @Override
         public List<Book> getBooks() throws RemoteException {
             synchronized (this) {
-                LogUtil.i(TAG, "invoking getBooks() method, now the list is : " + books.toString());
+                ULog.i(TAG, "invoking getBooks() method, now the list is : " + books.toString());
                 if (books != null) {
                     return books;
                 }
@@ -51,14 +50,14 @@ public class AIDLService extends Service {
                     books = new ArrayList<>();
                 }
                 if (book == null) {
-                    LogUtil.e(TAG, "Book is null in In");
+                    ULog.e(TAG, "Book is null in In");
                     book = new Book();
                 }
                 book.setPrice(2333);
                 if (!books.contains(book)) {
                     books.add(book);
                 }
-                LogUtil.i(TAG, "invoking addBooks() method, now the list is : " + books.toString());
+                ULog.i(TAG, "invoking addBooks() method, now the list is : " + books.toString());
             }
         }
     };
@@ -66,7 +65,7 @@ public class AIDLService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        LogUtil.e(getClass().getSimpleName(), String.format("on bind, intent = %s", intent.toString()));
+        ULog.e(getClass().getSimpleName(), String.format("on bind, intent = %s", intent.toString()));
         return bookManager;
     }
 }

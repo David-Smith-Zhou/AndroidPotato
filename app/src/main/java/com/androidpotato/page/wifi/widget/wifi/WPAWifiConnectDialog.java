@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.androidpotato.R;
-import com.davidzhou.library.util.LogUtil;
+import com.davidzhou.library.util.ULog;
 import com.androidpotato.utils.WifiUtil;
 
 
@@ -120,34 +120,34 @@ public class WPAWifiConnectDialog extends BaseWifiConnectDialog {
 
         config.SSID = "\"" + result.SSID + "\"";
         config.preSharedKey = "\"" + password + "\"";
-        LogUtil.i(TAG, "password: " + config.preSharedKey);
+        ULog.i(TAG, "password: " + config.preSharedKey);
 
         config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
         if (capabilities.contains("PSK")) {
-            LogUtil.i(TAG, "add PSK");
+            ULog.i(TAG, "add PSK");
             config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
         }
 
         if (capabilities.contains("TKIP")) {
-            LogUtil.i(TAG, "add TKIP");
+            ULog.i(TAG, "add TKIP");
             config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
             config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
         }
 
         if (capabilities.contains("CCMP")) {
-            LogUtil.i(TAG, "add CCMP");
+            ULog.i(TAG, "add CCMP");
             config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
             config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
         }
 
         // use WPA
         if (capabilities.contains("WPA-")) {
-            LogUtil.i(TAG, "add WPA");
+            ULog.i(TAG, "add WPA");
             config.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
         }
         // use WPA2
         if (capabilities.contains("WPA2")) {
-            LogUtil.i(TAG, "add WPA2");
+            ULog.i(TAG, "add WPA2");
             config.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
         }
 

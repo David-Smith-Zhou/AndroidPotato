@@ -8,7 +8,7 @@ import java.util.Locale;
  * Created by David on 2017/5/4 0004.
  */
 
-public class LogUtil {
+public class ULog {
     public static final boolean isShow = true;
 
     public static final int LOG_DIRECTION_LOGCAT = 0x01;
@@ -23,16 +23,16 @@ public class LogUtil {
     private static int mLogDir = LOG_DIRECTION_LOGCAT;
 
     public static void i(String tag, String msg) {
-        log(LogUtil.LEVLE_INFO, tag, msg);
+        log(ULog.LEVLE_INFO, tag, msg);
     }
     public static void d(String tag, String msg) {
-        log(LogUtil.LEVLE_DEBUG, tag, msg);
+        log(ULog.LEVLE_DEBUG, tag, msg);
     }
     public static void w(String tag, String msg) {
-        log(LogUtil.LEVLE_WARING, tag, msg);
+        log(ULog.LEVLE_WARING, tag, msg);
     }
     public static void e(String tag, String msg) {
-        log(LogUtil.LEVLE_ERROR, tag, msg);
+        log(ULog.LEVLE_ERROR, tag, msg);
     }
 
     public static void log(int level, String tag, String msg) {

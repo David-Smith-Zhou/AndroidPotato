@@ -6,9 +6,8 @@ import com.davidzhou.library.communication.common.constants.CommErrorConsts;
 import com.davidzhou.library.communication.common.dto.BaseDataInfo;
 import com.davidzhou.library.communication.common.dto.ErrorMsg;
 import com.davidzhou.library.communication.handler.CommMainMsgHandler;
-import com.davidzhou.library.communication.interfaces.CommEventCallback;
 import com.davidzhou.library.communication.net.socket.BaseSocket;
-import com.davidzhou.library.util.LogUtil;
+import com.davidzhou.library.util.ULog;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -64,7 +63,7 @@ public class AsyncCheckThread extends Thread {
     private void handlerWriteChannel() {
         if (sendData != null) {
             if (!mSocketChannel.isConnected()) {
-                LogUtil.e(TAG, "not connected before write");
+                ULog.e(TAG, "not connected before write");
                 return;
             }
             try {
@@ -74,7 +73,7 @@ public class AsyncCheckThread extends Thread {
                     if (sendCount == sendData.length) {
                         sendData = null;
                     } else {
-                        LogUtil.e(TAG, "sendCount is not equal the data's length");
+                        ULog.e(TAG, "sendCount is not equal the data's length");
                     }
                     // 未一次发送成功的情况暂时不考虑，需要增加策略来实现
                 }
@@ -87,7 +86,7 @@ public class AsyncCheckThread extends Thread {
     private void handlerReadChannel() {
         try {
             if (!mSocketChannel.isConnected()) {
-                LogUtil.e(TAG, "not connected before read");
+                ULog.e(TAG, "not connected before read");
                 return;
             }
             ByteBuffer byteBuffer = ByteBuffer.allocate(BaseSocket.RECV_BUFF_CAPACITY);
@@ -116,9 +115,9 @@ public class AsyncCheckThread extends Thread {
         try {
             if (mSocketChannel.isConnectionPending()) {
                 mHandler.removeCallbacks(closeRunnable);
-                LogUtil.i(TAG, "connecting");
+                ULog.i(TAG, "connecting");
                 if (mSocketChannel.finishConnect()) {
-                    LogUtil.i(TAG, "connected");
+                    ULog.i(TAG, "connected");
                     mTask = Task.LISTENING;
                     msgHandler.sendConnectMsg();
                 } else {
@@ -127,7 +126,7 @@ public class AsyncCheckThread extends Thread {
                     msgHandler.sendErrorMsg(errorMsg);
                 }
             } else {
-                LogUtil.e(TAG, "no connecting");
+                ULog.e(TAG, "no connecting");
                 mHandler.postDelayed(closeRunnable, CLOSE_TIMEOUT);
             }
         } catch (IOException e) {
@@ -170,15 +169,15 @@ public class AsyncCheckThread extends Thread {
         }
         rst = mSocketChannel.isConnectionPending();
         rst = mSocketChannel.finishConnect();
-//        LogUtil.i(TAG, "after finishConnect, rst = " + rst);
+//        ULog.i(TAG, "after finishConnect, rst = " + rst);
         SelectionKey sk = mSocketChannel.register(mSelector,
                 SelectionKey.OP_CONNECT);
         int num = mSelector.select(SELECT_TIMEOUT);
         if (num > 0) {
-//            LogUtil.i(TAG, "selectors: " + num);
+//            ULog.i(TAG, "selectors: " + num);
             for (SelectionKey selectionKey : mSelector.selectedKeys()) {
                 if (selectionKey.isConnectable()) {
-//                    LogUtil.d(TAG, "selectionKey isConnectable");
+//                    ULog.d(TAG, "selectionKey isConnectable");
                     handlerConnectChannel();
                 }
                 mSelector.selectedKeys().remove(selectionKey);
@@ -192,14 +191,14 @@ public class AsyncCheckThread extends Thread {
                         | SelectionKey.OP_READ);
         int num = mSelector.select(SELECT_TIMEOUT);
         if (num > 0) {
-//            LogUtil.i(TAG, "selectors: " + num);
+//            ULog.i(TAG, "selectors: " + num);
             for (SelectionKey selectionKey : mSelector.selectedKeys()) {
                 if (selectionKey.isWritable()) {
-//                    LogUtil.i(TAG, "selectionKey isWritable");
+//                    ULog.i(TAG, "selectionKey isWritable");
                     handlerWriteChannel();
                 }
                 if (selectionKey.isReadable()) {
-//                    LogUtil.i(TAG, "selectionKey isReadable");
+//                    ULog.i(TAG, "selectionKey isReadable");
                     handlerReadChannel();
                 }
                 // 最后删掉当前的键值
@@ -216,16 +215,16 @@ public class AsyncCheckThread extends Thread {
     @Override
     public void run() {
         super.run();
-//        LogUtil.i(TAG, "run");
+//        ULog.i(TAG, "run");
         try {
             do {
                 switch (mTask) {
                     case CONNECT:
-//                        LogUtil.i(TAG, "task connect");
+//                        ULog.i(TAG, "task connect");
                         connect();
                         break;
                     case LISTENING:
-//                        LogUtil.i(TAG, "task listening");
+//                        ULog.i(TAG, "task listening");
                         listen();
                         break;
                     case UNKNOWN:

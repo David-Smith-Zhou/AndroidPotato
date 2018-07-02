@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.Parcelable;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +14,7 @@ import android.view.View;
 import com.androidpotato.R;
 import com.androidpotato.aidl.Book;
 import com.androidpotato.aidl.BookManager;
-import com.davidzhou.library.util.LogUtil;
+import com.davidzhou.library.util.ULog;
 import com.davidzhou.library.util.ToastUtil;
 
 import java.util.List;
@@ -39,7 +38,7 @@ public class AIDLActivity extends AppCompatActivity implements View.OnClickListe
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            LogUtil.e(TAG, "service connected");
+            ULog.e(TAG, "service connected");
             manager = BookManager.Stub.asInterface(service);
             isBonded = true;
             if (manager != null) {
@@ -49,7 +48,7 @@ public class AIDLActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            LogUtil.e(TAG, "service disconnected");
+            ULog.e(TAG, "service disconnected");
             isBonded = false;
         }
     };
@@ -75,9 +74,9 @@ public class AIDLActivity extends AppCompatActivity implements View.OnClickListe
     private void getBooks() {
         try {
             books = manager.getBooks();
-            LogUtil.i(TAG, "get Books: " + books.toString());
+            ULog.i(TAG, "get Books: " + books.toString());
             for (Book each : books) {
-                LogUtil.i(TAG, "name: " + each.getName() + ", price: " + each.getPrice());
+                ULog.i(TAG, "name: " + each.getName() + ", price: " + each.getPrice());
             }
         } catch (RemoteException e) {
             e.printStackTrace();

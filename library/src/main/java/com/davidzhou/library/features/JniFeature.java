@@ -2,7 +2,7 @@ package com.davidzhou.library.features;
 
 import android.support.annotation.Nullable;
 
-import com.davidzhou.library.util.LogUtil;
+import com.davidzhou.library.util.ULog;
 
 import java.io.UnsupportedEncodingException;
 
@@ -16,12 +16,12 @@ public class JniFeature {
         System.loadLibrary("native_lib");
     }
     public String getStringWithNoneStaticMethod() {
-        LogUtil.i(TAG, "getStringWithNoneStaticMethod");
+        ULog.i(TAG, "getStringWithNoneStaticMethod");
         return "getStringWithNoneStaticMethod";
     }
     @Nullable
     public static byte[] getBytesWithStaticMethod() {
-        LogUtil.i(TAG, "getBytesWithStaticMethod");
+        ULog.i(TAG, "getBytesWithStaticMethod");
         try {
             return "getBytesWithStaticMethod".getBytes("UTF-8");
         } catch (UnsupportedEncodingException e) {

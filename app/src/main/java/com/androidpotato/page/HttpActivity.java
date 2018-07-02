@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.androidpotato.R;
-import com.davidzhou.library.util.LogUtil;
+import com.davidzhou.library.util.ULog;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -68,7 +68,7 @@ public class HttpActivity extends Activity {
                 .appendQueryParameter("package_name", "com.smit.terminalapp")
                 .appendQueryParameter("branch_code", "" + BRANCH_CODE);
         String url = builder.build().toString();
-        LogUtil.i(TAG, "url: " + url);
+        ULog.i(TAG, "url: " + url);
     }
     private void useOKHttp(double longitude, double latitude) {
         try {
@@ -76,12 +76,12 @@ public class HttpActivity extends Activity {
                     "coords=" + longitude + "," + latitude + "&from=1&to=5" +
                     "&mcode=3B:9D:6E:18:00:F2:89:95:F1:BC:D4:CF:86:C2:F8:3A:21:AE:64:AC;com.androidpotato" +
                     "&ak=3H7yalkLbGG13xMiLRwfCClV";
-            LogUtil.i(TAG, "useOKHttp: address: " + address);
+            ULog.i(TAG, "useOKHttp: address: " + address);
             OkHttpClient okHttpClient = new OkHttpClient();
             Request request = new Request.Builder().url(address).build();
             Response response = okHttpClient.newCall(request).execute();
             if (response.isSuccessful()) {
-                LogUtil.i(TAG, "useOKHttp: result: " + response.body().string());
+                ULog.i(TAG, "useOKHttp: result: " + response.body().string());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,7 +93,7 @@ public class HttpActivity extends Activity {
                     "coords=" + longitude + "," + latitude + "&from=1&to=5" +
                     "&mcode=3B:9D:6E:18:00:F2:89:95:F1:BC:D4:CF:86:C2:F8:3A:21:AE:64:AC;com.androidpotato" +
                     "&ak=3H7yalkLbGG13xMiLRwfCClV";
-            LogUtil.i(TAG, "useHttpURLConnection: address: " + address);
+            ULog.i(TAG, "useHttpURLConnection: address: " + address);
             URL url = new URL(address);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
@@ -102,7 +102,7 @@ public class HttpActivity extends Activity {
             if (code == 200) {
                 InputStream inputStream = conn.getInputStream();
                 String result = streamToString(inputStream);
-                LogUtil.i(TAG, "useHttpURLConnection: result: " + result);
+                ULog.i(TAG, "useHttpURLConnection: result: " + result);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -122,13 +122,13 @@ public class HttpActivity extends Activity {
         }
         @Override
         protected void onPreExecute() {
-            LogUtil.i(TAG, "onPreExecute: " );
+            ULog.i(TAG, "onPreExecute: " );
             super.onPreExecute();
         }
 
         @Override
         protected Object doInBackground(Object[] objects) {
-            LogUtil.i(TAG, "doInBackground: " + objects);
+            ULog.i(TAG, "doInBackground: " + objects);
             HttpActivity httpActivity = weakReference.get();
             if (httpActivity == null
                     || httpActivity.isFinishing()
@@ -142,19 +142,19 @@ public class HttpActivity extends Activity {
 
         @Override
         protected void onProgressUpdate(Object[] values) {
-            LogUtil.i(TAG, "onProgressUpdate: " + values);
+            ULog.i(TAG, "onProgressUpdate: " + values);
             super.onProgressUpdate(values);
         }
 
         @Override
         protected void onPostExecute(Object o) {
-            LogUtil.i(TAG, "onPostExecute: " + o);
+            ULog.i(TAG, "onPostExecute: " + o);
             super.onPostExecute(o);
         }
 
         @Override
         protected void onCancelled() {
-            LogUtil.i(TAG, "onCancelled: ");
+            ULog.i(TAG, "onCancelled: ");
             super.onCancelled();
         }
     }

@@ -18,7 +18,7 @@ import com.androidpotato.page.wifi.interfaces.OnWifiEventsListener;
 import com.androidpotato.page.wifi.widget.wifi.BaseWifiConnectDialog;
 import com.androidpotato.page.wifi.widget.wifi.WifiConnectDialogFactory;
 
-import com.davidzhou.library.util.LogUtil;
+import com.davidzhou.library.util.ULog;
 import com.davidzhou.library.util.ToastUtil;
 import com.androidpotato.utils.WifiUtil;
 
@@ -81,7 +81,7 @@ public class WifiOperator {
     public WifiInfo getConnectedWifiInfo() {
         WifiInfo info = getWifiManager().getConnectionInfo();
         if (!"00:00:00:00:00:00".equals(info.getBSSID())) {
-            LogUtil.i(TAG, "connected info: " + info.toString());
+            ULog.i(TAG, "connected info: " + info.toString());
             return info;
         }
         return null;
@@ -109,7 +109,7 @@ public class WifiOperator {
             getWifiManager().disconnect();
         }
         boolean bRst = getWifiManager().enableNetwork(config.networkId, true);
-        LogUtil.i(TAG, "bRst = " + bRst);
+        ULog.i(TAG, "bRst = " + bRst);
     }
 
     private void connectWithConfig(WifiConfiguration config) {
@@ -117,10 +117,10 @@ public class WifiOperator {
             getWifiManager().disconnect();
         }
         int netID = getWifiManager().addNetwork(config);
-        LogUtil.i(TAG, "netID: " + netID);
+        ULog.i(TAG, "netID: " + netID);
         if (netID != -1) { // add network not failure
             boolean bRst = getWifiManager().enableNetwork(netID, true);
-            LogUtil.i(TAG, "bRst = " + bRst);
+            ULog.i(TAG, "bRst = " + bRst);
             getWifiManager().updateNetwork(config);
         } else {
             handler.sendMessage(WifiHandler.ERROR_CONNECT_FAILURE, context.getString(R.string.result_connect_failure));
@@ -137,7 +137,7 @@ public class WifiOperator {
         if (ssid != null) {
             WifiConfiguration savedConfig = isSavedConfig(ssid);
             if (savedConfig != null) {
-                LogUtil.i(TAG, "delete network id: " + savedConfig.networkId);
+                ULog.i(TAG, "delete network id: " + savedConfig.networkId);
 //            getWifiManager().disableNetwork(savedConfig.networkId);
                 getWifiManager().removeNetwork(savedConfig.networkId);
             }
@@ -150,13 +150,13 @@ public class WifiOperator {
     @Nullable
     public WifiConfiguration isSavedConfig(String ssid) {
         List<WifiConfiguration> configs = getConfigs();
-        LogUtil.i(TAG, "configs size is : " + configs.size());
+        ULog.i(TAG, "configs size is : " + configs.size());
         if (configs.size() != 0) {
             for (WifiConfiguration each : configs) {
-                LogUtil.i(TAG, "saved config: " + each.SSID);
+                ULog.i(TAG, "saved config: " + each.SSID);
 
                 if (("\"" + ssid + "\"").equals(each.SSID)) {
-                    LogUtil.i(TAG, "find saved config");
+                    ULog.i(TAG, "find saved config");
                     return each;
                 }
             }
@@ -172,8 +172,8 @@ public class WifiOperator {
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                LogUtil.d(TAG, "go into receiver");
-                LogUtil.d(TAG, "action: " + intent.getAction());
+                ULog.d(TAG, "go into receiver");
+                ULog.d(TAG, "action: " + intent.getAction());
                 switch (intent.getAction()) {
                     case WifiManager.WIFI_STATE_CHANGED_ACTION:
                         handler.sendMessage(WifiHandler.MSG_TYPE_WIFI_STATUS_CHANGED,

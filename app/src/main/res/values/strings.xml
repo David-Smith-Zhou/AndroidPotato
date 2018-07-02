@@ -15,6 +15,7 @@
     <string name="mainPage_Wifi">Wifi</string>
     <string name="mainPage_Socket">Socket测试</string>
     <string name="mainPage_Map">百度地图学习</string>
+    <string name="mainPage_BtPhone">蓝牙电话</string>
     <string name="mainPage_Test">Test页面</string>
 
     <!-- bluetooth ssp -->
@@ -95,5 +96,5 @@
     <string name="test_btn_7">Button7</string>
     <string name="test_btn_8">Button8</string>
     <string name="test_btn_9">Button9</string>
-
+    <string name="test_clear">Clear</string>
 </resources>

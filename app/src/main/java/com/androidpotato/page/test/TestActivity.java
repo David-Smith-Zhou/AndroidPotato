@@ -14,27 +14,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.androidpotato.R;
 import com.davidzhou.library.features.JniFeature;
-import com.davidzhou.library.util.LogUtil;
+import com.davidzhou.library.util.ULog;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 
 /**
@@ -75,13 +67,13 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
                 super.handleMessage(msg);
                 switch (msg.what) {
                     case MSG_WORK:
-                        LogUtil.i(TAG, "MSG_WORK");
+                        ULog.i(TAG, "MSG_WORK");
                         break;
                     case MSG_MAIN:
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                LogUtil.i(TAG, "MSG_MAIN");
+                                ULog.i(TAG, "MSG_MAIN");
                             }
                         });
                         break;
@@ -125,13 +117,13 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
                 executor.execute(new Runnable() {
                     @Override
                     public void run() {
-                        LogUtil.i(TAG, "before sleep");
+                        ULog.i(TAG, "before sleep");
                         try {
                             Thread.sleep(2000);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        LogUtil.i(TAG, "after sleep");
+                        ULog.i(TAG, "after sleep");
                     }
                 });
             }
@@ -148,8 +140,8 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
             }
             break;
             case R.id.test_testBtn_7: {
-                LogUtil.i(TAG, "I get: " + JniFeature.getRandom());
-                LogUtil.i(TAG, JniFeature.getFormatString("123"));
+                ULog.i(TAG, "I get: " + JniFeature.getRandom());
+                ULog.i(TAG, JniFeature.getFormatString("123"));
             }
             break;
             default:
@@ -159,25 +151,25 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            LogUtil.i(TAG, "before sleep");
+            ULog.i(TAG, "before sleep");
             try {
                 Thread.sleep(2000);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            LogUtil.i(TAG, "after sleep");
+            ULog.i(TAG, "after sleep");
         }
     };
     private Callable<Integer> callable = new Callable<Integer>() {
         @Override
         public Integer call() throws Exception {
-            LogUtil.i(TAG, "before sleep");
+            ULog.i(TAG, "before sleep");
             try {
                 Thread.sleep(2000);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            LogUtil.i(TAG, "after sleep");
+            ULog.i(TAG, "after sleep");
             return 1;
         }
     };
@@ -209,7 +201,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         }
         textView.append(msg + "\n");
         scrollView.fullScroll(View.FOCUS_DOWN);
-        LogUtil.i(TAG, msg);
+        ULog.i(TAG, msg);
     }
 
 

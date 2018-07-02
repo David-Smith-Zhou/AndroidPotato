@@ -20,7 +20,7 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
-import com.davidzhou.library.util.LogUtil;
+import com.davidzhou.library.util.ULog;
 import com.davidzhou.library.util.ToastUtil;
 
 /**
@@ -57,7 +57,7 @@ public class MapActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         if (needUpdate(longitude, latitude)) {
-                            LogUtil.i(TAG, "need update");
+                            ULog.i(TAG, "need update");
                             showInMap(latitude, longitude);
                         }
                     }

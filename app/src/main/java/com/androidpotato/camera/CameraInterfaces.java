@@ -1,18 +1,14 @@
 package com.androidpotato.camera;
 
 import android.content.Context;
-import android.graphics.Point;
 import android.hardware.Camera;
 import android.view.Display;
 import android.view.Surface;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 
 
-import com.davidzhou.library.util.LogUtil;
+import com.davidzhou.library.util.ULog;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -88,7 +84,7 @@ public class CameraInterfaces {
         mCamera.setDisplayOrientation(preViewRotation);
 
         Camera.Size  currSize = mCamera.getParameters().getPreviewSize();
-        LogUtil.i(TAG, "current preview sizes: size.width = " + currSize.width + ", size.height = " + currSize.height + ", ratio = " + new DecimalFormat("##.##").format(currSize.width / (double)currSize.height));
+        ULog.i(TAG, "current preview sizes: size.width = " + currSize.width + ", size.height = " + currSize.height + ", ratio = " + new DecimalFormat("##.##").format(currSize.width / (double)currSize.height));
 
         Camera.Parameters parameters = mCamera.getParameters();
 
@@ -97,16 +93,16 @@ public class CameraInterfaces {
         Iterator<Camera.Size> psIterator = previewSizes.iterator();
         while (psIterator.hasNext()) {
             Camera.Size size = psIterator.next();
-            LogUtil.i(TAG, "support preview sizes: size.width = " + size.width + ", size.height = " + size.height + ", ratio = " + new DecimalFormat("##.##").format(size.width / (double)size.height));
+            ULog.i(TAG, "support preview sizes: size.width = " + size.width + ", size.height = " + size.height + ", ratio = " + new DecimalFormat("##.##").format(size.width / (double)size.height));
         }
         Camera.Size setSize = previewSizes.get(0);
-        LogUtil.i(TAG, "set size: width = " + setSize.width + ", height = " + setSize.height);
+        ULog.i(TAG, "set size: width = " + setSize.width + ", height = " + setSize.height);
         parameters.setPreviewSize(setSize.width, setSize.height);
 
         // show the support FPS range on this device
         List<int[]> fpsList = parameters.getSupportedPreviewFpsRange();
         for (int[] each : fpsList) {
-            LogUtil.i(TAG, "fpsList: " + Arrays.toString(each));
+            ULog.i(TAG, "fpsList: " + Arrays.toString(each));
         }
         parameters.setPreviewFpsRange(fpsList.get(0)[0], fpsList.get(0)[1]);
         mCamera.setParameters(parameters);

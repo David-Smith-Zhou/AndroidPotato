@@ -8,7 +8,7 @@ import com.davidzhou.library.communication.common.dto.BaseDataInfo;
 import com.davidzhou.library.communication.common.dto.ErrorMsg;
 import com.davidzhou.library.communication.handler.CommMainMsgHandlerCallback;
 import com.davidzhou.library.communication.net.socket.async.AsyncSocket;
-import com.davidzhou.library.util.LogUtil;
+import com.davidzhou.library.util.ULog;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -78,19 +78,19 @@ public class LocationManager {
     private CommMainMsgHandlerCallback commMainMsgHandlerCallback = new CommMainMsgHandlerCallback() {
         @Override
         public void onConnect() {
-            LogUtil.d(TAG, "onConnect");
+            ULog.d(TAG, "onConnect");
         }
 
         @Override
         public void onDisconnect() {
-            LogUtil.d(TAG, "onDisconnect");
+            ULog.d(TAG, "onDisconnect");
 
         }
 
         @Override
         public void onRecvData(BaseDataInfo dataInfo) {
-            LogUtil.d(TAG, "onRecvData: " + dataInfo.toString());
-            LogUtil.d(TAG, "onRecvDataStr: " + new String(dataInfo.getData()));
+            ULog.d(TAG, "onRecvData: " + dataInfo.toString());
+            ULog.d(TAG, "onRecvDataStr: " + new String(dataInfo.getData()));
             try {
                 JSONObject jsonObject = new JSONObject(new String(dataInfo.getData()));
                 String type = jsonObject.getString("type");
@@ -107,12 +107,12 @@ public class LocationManager {
 
         @Override
         public void onError(ErrorMsg msg) {
-            LogUtil.d(TAG, "onError");
+            ULog.d(TAG, "onError");
         }
     };
 
     private void parseResponseData(String responseStr) {
-        LogUtil.d(TAG, "parseResponseData: " + responseStr);
+        ULog.d(TAG, "parseResponseData: " + responseStr);
         try {
             JSONObject jsonObject = new JSONObject(responseStr);
             if (!jsonObject.has(REQUEST_PARAMS_TAG)) {
@@ -122,7 +122,7 @@ public class LocationManager {
             String data = result.getString(GPIO_TAG);
 
             String[] dataSplit = data.split(",");
-            LogUtil.i(TAG, "dataSplit: " + Arrays.toString(dataSplit));
+            ULog.i(TAG, "dataSplit: " + Arrays.toString(dataSplit));
             String longitudeStr // 经度
                     , latitudeStr;  // 纬度
             longitudeStr = dataSplit[3];
@@ -137,7 +137,7 @@ public class LocationManager {
                 MyAsyncTask task = new MyAsyncTask(this);
                 task.execute(longitude, latitude);
 
-//                LogUtil.i(TAG,"longitude: " + longitude + ",latitude: " + latitude);
+//                ULog.i(TAG,"longitude: " + longitude + ",latitude: " + latitude);
 //                if (onLocationUpdateCallback != null) {
 //                    onLocationUpdateCallback.onResponse(longitude, latitude);
 //                }
@@ -151,7 +151,7 @@ public class LocationManager {
     }
 
     private void parseReportData(String receiveStr) {
-        LogUtil.d(TAG, "parseReportData: " + receiveStr);
+        ULog.d(TAG, "parseReportData: " + receiveStr);
         try {
             JSONObject jsonObject = new JSONObject(receiveStr);
             JSONArray serviceDataArrays = jsonObject.getJSONArray("serviceData");
@@ -160,9 +160,9 @@ public class LocationManager {
                 if (CUSTOM_DATA_TAG.equals(tmpObj.getString(SERVICE_ID_TAG))) {
                     JSONObject dataObj = new JSONObject(tmpObj.getString(SERVICE_DATA_TAG));
                     String data = dataObj.getString(GPIO_TAG);
-                    LogUtil.i(TAG, "data: " + data);
+                    ULog.i(TAG, "data: " + data);
                     String[] dataSplit = data.split(",");
-                    LogUtil.i(TAG, "dataSplit: " + Arrays.toString(dataSplit));
+                    ULog.i(TAG, "dataSplit: " + Arrays.toString(dataSplit));
                     String longitudeStr // 经度
                             , latitudeStr;  // 纬度
                     longitudeStr = dataSplit[3];
@@ -199,13 +199,13 @@ public class LocationManager {
                     "coords=" + longitude + "," + latitude + "&from=1&to=5" +
                     "&mcode=3B:9D:6E:18:00:F2:89:95:F1:BC:D4:CF:86:C2:F8:3A:21:AE:64:AC;com.androidpotato" +
                     "&ak=3H7yalkLbGG13xMiLRwfCClV";
-            LogUtil.i(TAG, "useOKHttp: address: " + address);
+            ULog.i(TAG, "useOKHttp: address: " + address);
             OkHttpClient okHttpClient = new OkHttpClient();
             Request request = new Request.Builder().url(address).build();
             Response response = okHttpClient.newCall(request).execute();
             if (response.isSuccessful()) {
                 String resultStr = response.body().string();
-                LogUtil.i(TAG, "useOKHttp: result: " + resultStr);
+                ULog.i(TAG, "useOKHttp: result: " + resultStr);
                 try {
                     JSONObject jsonObject = new JSONObject(resultStr);
                     int status = jsonObject.getInt("status");
@@ -214,7 +214,7 @@ public class LocationManager {
                         JSONObject result = array.getJSONObject(0);
                         double longitudeRes = result.getDouble("x");
                         double latitudeRes = result.getDouble("y");
-                        LogUtil.i(TAG, "longitude: " + longitudeRes + ",latitude: " + latitudeRes);
+                        ULog.i(TAG, "longitude: " + longitudeRes + ",latitude: " + latitudeRes);
                         if (onLocationUpdateCallback != null) {
                             if (isCheck) {
                                 isCheck = false;
@@ -234,11 +234,11 @@ public class LocationManager {
     }
 
     private double getBaiduMapLocation(final double value) {
-        LogUtil.i(TAG, "value: " + value);
+        ULog.i(TAG, "value: " + value);
         double tail = value % 100;
-        LogUtil.i(TAG, "tail: " + tail);
+        ULog.i(TAG, "tail: " + tail);
         double head = value - tail;
-        LogUtil.i(TAG, "head: " + head);
+        ULog.i(TAG, "head: " + head);
         return head / 100 + tail / 60;
     }
 
@@ -265,13 +265,13 @@ public class LocationManager {
 
         @Override
         protected void onPreExecute() {
-            LogUtil.i(TAG, "onPreExecute: ");
+            ULog.i(TAG, "onPreExecute: ");
             super.onPreExecute();
         }
 
         @Override
         protected Object doInBackground(Object[] objects) {
-            LogUtil.i(TAG, "doInBackground: " + objects);
+            ULog.i(TAG, "doInBackground: " + objects);
             LocationManager locationManager = weakReference.get();
             if (locationManager == null) {
                 return null;
@@ -283,19 +283,19 @@ public class LocationManager {
 
         @Override
         protected void onProgressUpdate(Object[] values) {
-            LogUtil.i(TAG, "onProgressUpdate: " + values);
+            ULog.i(TAG, "onProgressUpdate: " + values);
             super.onProgressUpdate(values);
         }
 
         @Override
         protected void onPostExecute(Object o) {
-            LogUtil.i(TAG, "onPostExecute: " + o);
+            ULog.i(TAG, "onPostExecute: " + o);
             super.onPostExecute(o);
         }
 
         @Override
         protected void onCancelled() {
-            LogUtil.i(TAG, "onCancelled: ");
+            ULog.i(TAG, "onCancelled: ");
             super.onCancelled();
         }
     }

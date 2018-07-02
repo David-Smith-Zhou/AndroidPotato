@@ -13,10 +13,11 @@ import android.view.MenuItem;
 import com.androidpotato.R;
 import com.androidpotato.adapter.HomeAdapter;
 import com.androidpotato.dto.MainPageItem;
+import com.androidpotato.page.bluetoothphone.BluetoothPhoneActivity;
 import com.androidpotato.page.map.MapActivity;
 import com.androidpotato.page.test.TestActivity;
 import com.androidpotato.page.wifi.WifiActivity;
-import com.davidzhou.library.util.LogUtil;
+import com.davidzhou.library.util.ULog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity{
 //        addItemWithMainPageItem(SocketActivity.class, this.getString(R.string.mainPage_Socket));
         addItemWithMainPageItem(MapActivity.class, getString(R.string.mainPage_Map));
         addItemWithMainPageItem(TestActivity.class, getString(R.string.mainPage_Test));
+        addItemWithMainPageItem(BluetoothPhoneActivity.class, getString(R.string.mainPage_BtPhone));
         homeAdapter.notifyDataSetChanged();
     }
     private void addItemWithMainPageItem(Class<?> cls, String name) {
@@ -70,13 +72,13 @@ public class MainActivity extends AppCompatActivity{
     private HomeAdapter.OnHomeAdapterListener onHomeAdapterListener = new HomeAdapter.OnHomeAdapterListener() {
         @Override
         public void onItemClick(View view, int position) {
-            LogUtil.i(TAG, "onClick: item : " + position);
+            ULog.i(TAG, "onClick: item : " + position);
             startActivity(items.get(position).getIntent());
         }
 
         @Override
         public void onItemLongClick(View view, int position) {
-            LogUtil.i(TAG, "onLongClick: item : " + position);
+            ULog.i(TAG, "onLongClick: item : " + position);
         }
     };
 

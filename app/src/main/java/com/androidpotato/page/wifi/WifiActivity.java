@@ -22,7 +22,7 @@ import com.androidpotato.page.wifi.adapter.ScanResultInfo;
 import com.androidpotato.page.wifi.adapter.WifiItemAdapter;
 import com.androidpotato.page.wifi.interfaces.OnWifiEventsListener;
 import com.androidpotato.page.wifi.widget.editor.WifiEditorDialog;
-import com.davidzhou.library.util.LogUtil;
+import com.davidzhou.library.util.ULog;
 import com.davidzhou.library.util.ToastUtil;
 
 import java.util.ArrayList;
@@ -142,7 +142,7 @@ public class WifiActivity extends AppCompatActivity {
                     statusStr = "WIFI_STATE_UNKNOWN";
                     break;
             }
-            LogUtil.i(TAG, "wifi status changed: " + statusStr);
+            ULog.i(TAG, "wifi status changed: " + statusStr);
         }
 
         @Override
@@ -150,16 +150,16 @@ public class WifiActivity extends AppCompatActivity {
             if (swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(false);
             }
-            LogUtil.i(TAG, "scan scanResults available");
+            ULog.i(TAG, "scan scanResults available");
             displayScanResult(wifiOperator.getScanResults());
         }
 
         @Override
         public void onNetworkStatusChanged(NetworkInfo info) {
             NetworkInfo.DetailedState status = info.getDetailedState();
-            LogUtil.d(TAG, "status: " + status);
+            ULog.d(TAG, "status: " + status);
             if (status == NetworkInfo.DetailedState.CONNECTED) {
-                LogUtil.i(TAG, "CONNECTED");
+                ULog.i(TAG, "CONNECTED");
                 //保存连接信息，才能实现开机自动连接wifi
                 wifiOperator.saveConfig();
                 reScanWifi();
@@ -168,28 +168,28 @@ public class WifiActivity extends AppCompatActivity {
                 exit();
             }
             if (status == NetworkInfo.DetailedState.OBTAINING_IPADDR) {
-                LogUtil.i(TAG, "OBTAINING_IPADDR");
+                ULog.i(TAG, "OBTAINING_IPADDR");
                 ToastUtil.ToastShort(WifiActivity.this, getString(R.string.result_obtant_ip_addr));
             }
             if (status == NetworkInfo.DetailedState.AUTHENTICATING) {
-                LogUtil.i(TAG, "AUTHENTICATING");
+                ULog.i(TAG, "AUTHENTICATING");
                 ToastUtil.ToastShort(WifiActivity.this, getString(R.string.result_authenticating));
             }
             if (status == NetworkInfo.DetailedState.FAILED) {
-                LogUtil.i(TAG, "FAILED");
+                ULog.i(TAG, "FAILED");
                 ToastUtil.ToastShort(WifiActivity.this, getString(R.string.result_connect_failure));
             }
             if (status == NetworkInfo.DetailedState.CONNECTING) {
-                LogUtil.i(TAG, "CONNECTING");
+                ULog.i(TAG, "CONNECTING");
 //                ToastUtil.ToastShort(WifiActivity.this, "CONNECTING");
             }
             if (status == NetworkInfo.DetailedState.DISCONNECTED) {
-                LogUtil.i(TAG, "DISCONNECTED");
+                ULog.i(TAG, "DISCONNECTED");
 //                reScanWifi();
 //                ToastUtil.ToastShort(WifiActivity.this, "DISCONNECTED");
             }
             if (status == NetworkInfo.DetailedState.DISCONNECTING) {
-                LogUtil.i(TAG, "DISCONNECTING");
+                ULog.i(TAG, "DISCONNECTING");
 //                ToastUtil.ToastShort(WifiActivity.this, "DISCONNECTING");
             }
 
@@ -265,7 +265,7 @@ public class WifiActivity extends AppCompatActivity {
 
     private void addOtherItemsWithConnectItem(List<ScanResult> results, WifiInfo info) {
         for (ScanResult each : results) {
-            LogUtil.i(TAG, "get wifi: " + each.SSID + ", auth type: " + each.capabilities + ", level: " + each.level + ", bssid: " + each.BSSID);
+            ULog.i(TAG, "get wifi: " + each.SSID + ", auth type: " + each.capabilities + ", level: " + each.level + ", bssid: " + each.BSSID);
             if (!info.getBSSID().equals(each.BSSID)) {
                 ScanResultInfo scanResultInfo = new ScanResultInfo(each);
                 if (isSavedConfig(each)) {
@@ -284,7 +284,7 @@ public class WifiActivity extends AppCompatActivity {
 
     private void addOtherItemsWithoutConnectItem(List<ScanResult> results) {
         for (ScanResult each : results) {
-            LogUtil.i(TAG, "get wifi: " + each.SSID + ", auth type: " + each.capabilities + ", level: " + each.level + ", bssid: " + each.BSSID);
+            ULog.i(TAG, "get wifi: " + each.SSID + ", auth type: " + each.capabilities + ", level: " + each.level + ", bssid: " + each.BSSID);
             ScanResultInfo scanResultInfo = new ScanResultInfo(each);
             if (isSavedConfig(each)) {
                 scanResultInfo.setSaved(true);
@@ -312,7 +312,7 @@ public class WifiActivity extends AppCompatActivity {
         for (WifiConfiguration config : configs) {
             if (config.SSID != null) {
                 String ssid = config.SSID.substring(1, config.SSID.length() - 1);
-//            LogUtil.i(TAG, "saved config: SSID: " + ssid + ", BSSID: " + config.BSSID);
+//            ULog.i(TAG, "saved config: SSID: " + ssid + ", BSSID: " + config.BSSID);
                 if (result.SSID.equals(ssid)) {
                     return true;
                 }

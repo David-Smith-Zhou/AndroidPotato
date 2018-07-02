@@ -28,7 +28,7 @@ public class UsbDemoActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i(TAG, "onResume");
+        Log.i(TAG, "resume");
     }
 
     @Override
