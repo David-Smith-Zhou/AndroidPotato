@@ -1,8 +1,6 @@
 package com.androidpotato.page;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -23,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends BaseActivity{
 
     private static final String TAG = "MainActivity";
     private RecyclerView recyclerView;
@@ -49,6 +47,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void initData() {
+        addItemWithMainPageItem(BluetoothPhoneActivity.class, getString(R.string.mainPage_BtPhone));
         addItemWithMainPageItem(CameraActivity.class, this.getString(R.string.mainPage_Camera));
         addItemWithMainPageItem(TouchActivity.class, this.getString(R.string.mainPage_TouchView));
         addItemWithMainPageItem(HttpActivity.class, this.getString(R.string.mainPage_Http));
@@ -58,14 +57,12 @@ public class MainActivity extends AppCompatActivity{
 //        addItemWithMainPageItem(SocketActivity.class, this.getString(R.string.mainPage_Socket));
         addItemWithMainPageItem(MapActivity.class, getString(R.string.mainPage_Map));
         addItemWithMainPageItem(TestActivity.class, getString(R.string.mainPage_Test));
-        addItemWithMainPageItem(BluetoothPhoneActivity.class, getString(R.string.mainPage_BtPhone));
         homeAdapter.notifyDataSetChanged();
     }
     private void addItemWithMainPageItem(Class<?> cls, String name) {
         MainPageItem aidlItem = new MainPageItem();
-        Intent intent = new Intent().setClass(this, cls);
-        aidlItem.setIntent(intent);
         aidlItem.setName(name);
+        aidlItem.setClz(cls);
         items.add(aidlItem);
     }
 
@@ -73,7 +70,7 @@ public class MainActivity extends AppCompatActivity{
         @Override
         public void onItemClick(View view, int position) {
             ULog.i(TAG, "onClick: item : " + position);
-            startActivity(items.get(position).getIntent());
+            goToNewPage(items.get(position).getClz());
         }
 
         @Override

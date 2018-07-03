@@ -26,7 +26,7 @@ import okhttp3.Response;
  * Created by David on 2017/6/26 0026.
  */
 
-public class HttpActivity extends Activity {
+public class HttpActivity extends BaseActivity {
     private static final String TAG = "HttpActivity";
     private static final int BRANCH_CODE = 1;
     private static final String TRANSLATE_URL = "http://api.map.baidu.com/geoconv/v1/";

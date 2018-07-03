@@ -14,11 +14,13 @@ import com.davidzhou.library.util.ULog;
 public class BluetoothPhoneActivity extends TestTemplateActivity implements CommonTestCallback{
 
     private static final String TAG = "BluetoothPhoneActivity";
+    private BtPhoneManager mManger;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setCommonTestCallback(this);
+        mManger = BtPhoneManager.getInstance();
     }
 
     @Override
@@ -56,6 +58,7 @@ public class BluetoothPhoneActivity extends TestTemplateActivity implements Comm
         switch (position) {
             case BTN_INDEX_1:
                 ULog.i(TAG, "BTN_INDEX_1");
+                mManger.goToBtSettings(this);
                 break;
             case BTN_INDEX_2:
                 ULog.i(TAG, "BTN_INDEX_2");
