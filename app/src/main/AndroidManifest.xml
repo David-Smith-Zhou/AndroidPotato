@@ -44,11 +44,11 @@
             android:name=".page.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".page.TouchActivity"
@@ -59,46 +59,28 @@
         <activity
             android:name=".page.HttpActivity"
             android:theme="@style/AppTheme.NoActionBar">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
         </activity>
         <activity
-            android:name=".page.BluetoothSSPActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".page.AIDLActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".page.UsbDemoActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".page.wifi.WifiActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".page.SocketActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".page.map.MapActivity"
             android:theme="@style/AppTheme.NoActionBar">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".page.test.TestActivity"
             android:theme="@style/AppTheme.NoActionBar" >
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
         </activity>
-        <activity android:name=".page.bluetoothphone.BluetoothPhoneActivity" />
+        <activity android:name=".page.FileTestActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <service
             android:name=".services.AIDLService"

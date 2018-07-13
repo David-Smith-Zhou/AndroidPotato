@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import com.androidpotato.R;
 import com.androidpotato.adapter.HomeAdapter;
 import com.androidpotato.dto.MainPageItem;
-import com.androidpotato.page.bluetoothphone.BluetoothPhoneActivity;
 import com.androidpotato.page.map.MapActivity;
 import com.androidpotato.page.test.TestActivity;
 import com.androidpotato.page.wifi.WifiActivity;
@@ -47,14 +46,12 @@ public class MainActivity extends BaseActivity{
     }
 
     private void initData() {
-        addItemWithMainPageItem(BluetoothPhoneActivity.class, getString(R.string.mainPage_BtPhone));
+        addItemWithMainPageItem(FileTestActivity.class, "文件测试");
         addItemWithMainPageItem(CameraActivity.class, this.getString(R.string.mainPage_Camera));
         addItemWithMainPageItem(TouchActivity.class, this.getString(R.string.mainPage_TouchView));
         addItemWithMainPageItem(HttpActivity.class, this.getString(R.string.mainPage_Http));
-        addItemWithMainPageItem(BluetoothSSPActivity.class, this.getString(R.string.mainPage_Bluetooth));
 //        addItemWithMainPageItem(AIDLActivity.class, this.getString(R.string.mainPage_Aidl));
         addItemWithMainPageItem(WifiActivity.class, this.getString(R.string.mainPage_Wifi));
-//        addItemWithMainPageItem(SocketActivity.class, this.getString(R.string.mainPage_Socket));
         addItemWithMainPageItem(MapActivity.class, getString(R.string.mainPage_Map));
         addItemWithMainPageItem(TestActivity.class, getString(R.string.mainPage_Test));
         homeAdapter.notifyDataSetChanged();
