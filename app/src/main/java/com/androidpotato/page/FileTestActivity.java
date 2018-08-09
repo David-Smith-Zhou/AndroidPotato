@@ -1,43 +1,35 @@
 package com.androidpotato.page;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.androidpotato.dto.Person;
+import com.androidpotato.greendao.DaoMaster;
+import com.androidpotato.greendao.DaoSession;
 import com.androidpotato.page.test.TestTemplateActivity;
 import com.androidpotato.common.CommonTestCallback;
-import com.androidpotato.utils.HashMapToFileUtil;
+import com.androidpotato.utils.TimeUtil;
 import com.davidzhou.library.util.ULog;
 
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
-
-import java.util.HashMap;
-import java.util.Random;
-
-import io.reactivex.BackpressureStrategy;
-import io.reactivex.Flowable;
-import io.reactivex.FlowableEmitter;
-import io.reactivex.FlowableOnSubscribe;
-import io.reactivex.FlowableSubscriber;
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 public class FileTestActivity extends TestTemplateActivity implements CommonTestCallback {
     private static final String TAG = "FileTestActivity";
-    private String[] KEYS = new String[]{
-            "audio",
-            "media"
-    };
-    private HashMap<String, Boolean> mHashMap;
-    private HashMapToFileUtil mHashMapToFileUtil;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setCommonTestCallback(this);
-        mHashMapToFileUtil = HashMapToFileUtil.getInstance();
+        ULog.i(TAG, "currDate: " + TimeUtil.currDateStr());
     }
 
     @Override
@@ -47,7 +39,7 @@ public class FileTestActivity extends TestTemplateActivity implements CommonTest
 
     @Override
     public void resume() {
-
+        test();
     }
 
     @Override
@@ -74,94 +66,94 @@ public class FileTestActivity extends TestTemplateActivity implements CommonTest
     public void onBtnClicked(BtnIndex position) {
         switch (position) {
             case BTN_INDEX_1:
-                mHashMap = mHashMapToFileUtil.getHashMap(this);
-                ULog.i(TAG, "get hashMap from file: " + mHashMap.toString());
+                test();
                 break;
             case BTN_INDEX_2:
-                Random random = new Random();
-                String key = KEYS[random.nextInt(2)];
-                boolean value = random.nextBoolean();
-                ULog.i(TAG, "key: " + key + ", value: " + value);
-                saveToHashMap(key, value);
-                ULog.i(TAG, "get hashMap from ram: " + mHashMap.toString());
+                debug();
                 break;
             case BTN_INDEX_3:
-                mHashMapToFileUtil.writeToFile(this, mHashMap);
                 break;
             case BTN_INDEX_4:
-                test();
                 break;
         }
     }
-
-    private void saveToHashMap(String key, boolean value) {
-        mHashMap.put(key, value);
+    private void debug() {
+        Person person = new Person();
+        person.setBirthday(TimeUtil.currDateStr());
+        person.setMale(true);
+        person.setName("David");
+        DaoMaster.OpenHelper openHelper = new DaoMaster.DevOpenHelper(this, "db_name");
+        SQLiteDatabase db = openHelper.getWritableDatabase();
+        DaoMaster daoMaster = new DaoMaster(db);
+        DaoSession daoSession = daoMaster.newSession();
+        daoSession.getPersonDao().insert(person);
+        ULog.i(TAG, "persons: " + daoSession.getPersonDao().queryBuilder().list().size());
     }
 
     private void test() {
-        String[] names = {"123", "132123", "14321323", "1123", "43123", "112323"};
-        FlowableSubscriber<String> subscriber = new FlowableSubscriber<String>() {
+        Observable.create(new ObservableOnSubscribe<String>() {
             @Override
-            public void onSubscribe(Subscription s) {
-                ULog.i(TAG, "onSubscribe: " + s);
-                s.request(Long.MAX_VALUE);
+            public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+                try {
+                    emitter.onNext("123");
+                    emitter.onNext("456");
+                    emitter.onNext("789");
+                    emitter.onNext("123");
+                    emitter.onNext("456");
+                    emitter.onNext("789");
+                    emitter.onNext("123");
+                    emitter.onNext("456");
+                    emitter.onNext("789");
+                    emitter.onNext("123");
+                    emitter.onNext("456");
+                    emitter.onNext("789");
+                    emitter.onComplete();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+        })
+                .map(new Function<String, Integer>() {
+                    @Override
+                    public Integer apply(String s) throws Exception {
+                        return Integer.valueOf(s);
+                    }
+                })
+                // 在io操作线程中执行
+                .subscribeOn(Schedulers.io())
+                // 在主线程中订阅观察结果
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer s) throws Exception {
+                        ULog.i(TAG, "doOnNext get: " + s);
+                    }
+                })
+                .subscribe(new Observer<Integer>() {
+                    private Disposable disposable;
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        disposable = d;
+                    }
 
-            @Override
-            public void onNext(String s) {
-                ULog.i(TAG, "onNext: " + s);
-            }
+                    @Override
+                    public void onNext(Integer s) {
+                        ULog.i(TAG, "onNext get: " + s);
+//                        if ("456".equals(s)) {
+//                            disposable.dispose();
+//                            ULog.i(TAG, "dispose");
+//                        }
+                    }
 
-            @Override
-            public void onError(Throwable t) {
-                ULog.e(TAG, "onError: " + t.getMessage());
+                    @Override
+                    public void onError(Throwable e) {
+                        ULog.e(TAG, "onError");
+                    }
 
-            }
-
-            @Override
-            public void onComplete() {
-                ULog.i(TAG, "onComplete");
-            }
-        };
-        Flowable<String> flowable = Flowable.create(new FlowableOnSubscribe<String>() {
-            @Override
-            public void subscribe(FlowableEmitter<String> emitter) throws Exception {
-                emitter.onNext("123");
-                emitter.onNext("321");
-                emitter.onComplete();
-            }
-        }, BackpressureStrategy.BUFFER);
-        flowable.subscribe(subscriber);
-        Disposable disposable = flowable.subscribe(new Consumer<String>() {
-            @Override
-            public void accept(String s) throws Exception {
-                ULog.i(TAG, "accept: s: " + s);
-            }
-        });
-
-        Observer<Integer> subscriber1 = new Observer<Integer>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(Integer integer) {
-                ULog.i(TAG, "onNext in subscriber1: " + integer);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
-        Observable<Integer> a = Observable.just(1, 2, 3, 4, 5, 6);
-        a.subscribe(subscriber1);
-
+                    @Override
+                    public void onComplete() {
+                        ULog.i(TAG, "onComplete");
+                    }
+                });
     }
 }

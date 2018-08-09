@@ -51,9 +51,6 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void init() {
-        Toolbar toolbar = findViewById(R.id.test_toolbar);
-        toolbar.setTitle(getString(R.string.mainPage_Test));
-        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         scrollView = this.findViewById(R.id.test_scrollView);
         textView = this.findViewById(R.id.test_textView);
@@ -203,7 +200,6 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         scrollView.fullScroll(View.FOCUS_DOWN);
         ULog.i(TAG, msg);
     }
-
 
     public class TestHandlerThread extends HandlerThread {
         public TestHandlerThread(String name) {

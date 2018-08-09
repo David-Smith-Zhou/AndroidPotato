@@ -3,6 +3,7 @@ package com.androidpotato.page;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -16,7 +17,7 @@ import com.davidzhou.library.util.ULog;
 /**
  * Created by DavidSmith on 2016/6/18 0018.
  */
-public class CameraActivity extends AppCompatActivity implements View.OnClickListener{
+public class CameraActivity extends BaseActivity implements View.OnClickListener{
     private static final String TAG = "CameraActivity";
     private CameraPreview mCameraPreview;
     private CameraOperator cameraOperator;
@@ -30,6 +31,8 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
         initViews();
     }
     private void initViews() {
+        ActionBar  actionBar = getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(true);
         cameraOperator = CameraOperator.getInstance();
         mCameraPreview = (CameraPreview) this.findViewById(R.id.page_camera_cp);
         cameraOperator.setCameraPreview(mCameraPreview);

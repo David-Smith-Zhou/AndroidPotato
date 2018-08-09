@@ -82,7 +82,7 @@
     <!-- wifi editor -->
     <string name="wifi_editor_no_saving">不保存</string>
     <string name="wifi_deitor_speed">传输速度: %1$dMbps</string>
-    
+
     <!-- map -->
     <string name="map_locate">定位</string>
 
@@ -97,4 +97,9 @@
     <string name="test_btn_8">Button8</string>
     <string name="test_btn_9">Button9</string>
     <string name="test_clear">Clear</string>
+
+    <string name="appwidget_text">PotatoWidget</string>
+    <string name="appwidget_hint_normal">请点我</string>
+    <string name="appwidget_hint_pressed">点我干嘛</string>
+    <string name="add_widget">Add widget</string>
 </resources>

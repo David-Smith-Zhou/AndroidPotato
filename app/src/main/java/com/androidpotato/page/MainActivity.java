@@ -50,7 +50,7 @@ public class MainActivity extends BaseActivity{
         addItemWithMainPageItem(CameraActivity.class, this.getString(R.string.mainPage_Camera));
         addItemWithMainPageItem(TouchActivity.class, this.getString(R.string.mainPage_TouchView));
         addItemWithMainPageItem(HttpActivity.class, this.getString(R.string.mainPage_Http));
-//        addItemWithMainPageItem(AIDLActivity.class, this.getString(R.string.mainPage_Aidl));
+        addItemWithMainPageItem(AIDLActivity.class, this.getString(R.string.mainPage_Aidl));
         addItemWithMainPageItem(WifiActivity.class, this.getString(R.string.mainPage_Wifi));
         addItemWithMainPageItem(MapActivity.class, getString(R.string.mainPage_Map));
         addItemWithMainPageItem(TestActivity.class, getString(R.string.mainPage_Test));
@@ -75,8 +75,6 @@ public class MainActivity extends BaseActivity{
             ULog.i(TAG, "onLongClick: item : " + position);
         }
     };
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
