@@ -7,11 +7,5 @@ import com.androidpotato.page.test.TestTemplateActivity;
  */
 
 public interface CommonTestCallback {
-    void start();
-    void resume();
-    void pause();
-    void restart();
-    void stop();
-    void destroy();
     void onBtnClicked(TestTemplateActivity.BtnIndex position);
 }

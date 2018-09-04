@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -28,7 +29,7 @@ import static com.androidpotato.page.test.TestTemplateActivity.BtnIndex.BTN_UNKN
  * Created by David on 2018/6/29.
  */
 
-public class TestTemplateActivity extends BaseActivity implements View.OnClickListener{
+public class TestTemplateActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "TestTemplateActivity";
 
     public enum BtnIndex {
@@ -45,6 +46,42 @@ public class TestTemplateActivity extends BaseActivity implements View.OnClickLi
     ScrollView mTextScrollView;
     @BindView(R.id.common_test_textView)
     TextView mTextView;
+    @BindView(R.id.common_test_btn_1)
+    Button testBtn1;
+    @BindView(R.id.common_test_btn_2)
+    Button testBtn2;
+    @BindView(R.id.common_test_btn_3)
+    Button testBtn3;
+    @BindView(R.id.common_test_btn_4)
+    Button testBtn4;
+    @BindView(R.id.common_test_btn_5)
+    Button testBtn5;
+    @BindView(R.id.common_test_btn_6)
+    Button testBtn6;
+
+    public Button getTestBtn1() {
+        return testBtn1;
+    }
+
+    public Button getTestBtn2() {
+        return testBtn2;
+    }
+
+    public Button getTestBtn3() {
+        return testBtn3;
+    }
+
+    public Button getTestBtn4() {
+        return testBtn4;
+    }
+
+    public Button getTestBtn5() {
+        return testBtn5;
+    }
+
+    public Button getTestBtn6() {
+        return testBtn6;
+    }
 
     private CommonTestCallback mCommonTestCallback;
 
@@ -56,10 +93,12 @@ public class TestTemplateActivity extends BaseActivity implements View.OnClickLi
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
     public final void showText(String text) {
-        mTextView.append(text);
+        mTextView.append(text + "\n");
         mTextScrollView.fullScroll(View.FOCUS_DOWN);
     }
+
     @OnClick({
             R.id.common_test_clear_btn,
             R.id.common_test_btn_1,
@@ -91,12 +130,16 @@ public class TestTemplateActivity extends BaseActivity implements View.OnClickLi
             case R.id.common_test_btn_6:
                 index = BTN_INDEX_6;
                 break;
+            case R.id.common_test_clear_btn:
+                mTextView.setText("");
+                break;
         }
         if (index != BTN_UNKNOWN && mCommonTestCallback != null) {
             mCommonTestCallback.onBtnClicked(index);
         }
     }
-    public void setCommonTestCallback (CommonTestCallback callback) {
+
+    public void setCommonTestCallback(CommonTestCallback callback) {
         this.mCommonTestCallback = callback;
     }
 
@@ -104,54 +147,36 @@ public class TestTemplateActivity extends BaseActivity implements View.OnClickLi
     protected void onStart() {
         ULog.i(TAG, "onStart");
         super.onStart();
-        if (mCommonTestCallback != null) {
-            mCommonTestCallback.start();
-        }
     }
 
     @Override
     protected void onResume() {
         ULog.i(TAG, "onResume");
         super.onResume();
-        if (mCommonTestCallback != null) {
-            mCommonTestCallback.resume();
-        }
     }
 
     @Override
     protected void onDestroy() {
         ULog.i(TAG, "onDestroy");
         super.onDestroy();
-        if (mCommonTestCallback != null) {
-            mCommonTestCallback.destroy();
-        }
     }
 
     @Override
     protected void onPause() {
         ULog.i(TAG, "onPause");
         super.onPause();
-        if (mCommonTestCallback != null) {
-            mCommonTestCallback.pause();
-        }
     }
 
     @Override
     protected void onRestart() {
         ULog.i(TAG, "onRestart");
         super.onRestart();
-        if (mCommonTestCallback != null) {
-            mCommonTestCallback.restart();
-        }
     }
 
     @Override
     protected void onStop() {
         ULog.i(TAG, "onStop");
         super.onStop();
-        if (mCommonTestCallback != null) {
-            mCommonTestCallback.stop();
-        }
     }
 
     @Override

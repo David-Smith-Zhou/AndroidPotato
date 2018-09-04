@@ -33,33 +33,9 @@ public class FileTestActivity extends TestTemplateActivity implements CommonTest
     }
 
     @Override
-    public void start() {
-
-    }
-
-    @Override
-    public void resume() {
+    protected void onResume() {
+        super.onResume();
         test();
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void restart() {
-
-    }
-
-    @Override
-    public void stop() {
-
-    }
-
-    @Override
-    public void destroy() {
-
     }
 
     @Override

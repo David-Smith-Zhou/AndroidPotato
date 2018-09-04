@@ -26,6 +26,8 @@
     <!-- 鉴权所需该权限获取进程列表 -->
     <uses-permission android:name="android.permission.CAMERA" />
 
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
     <!-- 使用步行AR导航，配置Camera权限 -->
     <application
         android:name=".application.MyApp"
@@ -51,22 +53,15 @@
         </activity>
         <activity android:name=".page.TouchActivity" />
         <activity android:name=".page.CameraActivity" />
-        <activity android:name=".page.HttpActivity"></activity>
+        <activity android:name=".page.HttpActivity" />
         <activity
             android:name=".page.AIDLActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".page.wifi.WifiActivity" />
-        <activity android:name=".page.map.MapActivity"></activity>
-        <activity android:name=".page.test.TestActivity"></activity>
-        <activity android:name=".page.FileTestActivity">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
+        <activity android:name=".page.map.MapActivity" />
+        <activity android:name=".page.test.TestActivity" />
+        <activity android:name=".page.FileTestActivity" />
+        <activity android:name=".page.MultThreadActivity" />
 
         <service
             android:name=".services.AIDLService"

@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.widget.RemoteViews;
 
 import com.androidpotato.R;
+import com.androidpotato.page.MainActivity;
 import com.androidpotato.utils.TimeUtil;
 import com.davidzhou.library.util.ULog;
 
@@ -93,6 +94,8 @@ public class PotatoWidget extends AppWidgetProvider {
             switch (resId) {
                 case R.id.appwidget_btn:
                     ULog.i(TAG, "onClick");
+                    context.startActivity(new Intent(context, MainActivity.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     break;
                 case SERVICE_ID:
                     String dataStr = intent.getStringExtra(KEY_DATA);

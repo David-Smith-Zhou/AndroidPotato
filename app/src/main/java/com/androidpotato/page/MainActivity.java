@@ -1,12 +1,19 @@
 package com.androidpotato.page;
 
+import android.content.Context;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.WrapperListAdapter;
 
 import com.androidpotato.R;
 import com.androidpotato.adapter.HomeAdapter;
@@ -44,16 +51,37 @@ public class MainActivity extends BaseActivity{
         recyclerView.setAdapter(homeAdapter);
         initData();
     }
+    private void addButton() {
+        Button btn = new Button(this);
+        btn.setText("介细个按柳");
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                0, 0,
+                PixelFormat.TRANSPARENT);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ULog.i("btn", "俺被点了！");
+            }
+        });
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
+        layoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+//        layoutParams.gravity = Gravity.CENTER;
+        WindowManager windowManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
+        windowManager.addView(btn, layoutParams);
+    }
 
     private void initData() {
+        addItemWithMainPageItem(MultThreadActivity.class, "多线程测试");
         addItemWithMainPageItem(FileTestActivity.class, "文件测试");
         addItemWithMainPageItem(CameraActivity.class, this.getString(R.string.mainPage_Camera));
         addItemWithMainPageItem(TouchActivity.class, this.getString(R.string.mainPage_TouchView));
         addItemWithMainPageItem(HttpActivity.class, this.getString(R.string.mainPage_Http));
         addItemWithMainPageItem(AIDLActivity.class, this.getString(R.string.mainPage_Aidl));
         addItemWithMainPageItem(WifiActivity.class, this.getString(R.string.mainPage_Wifi));
-        addItemWithMainPageItem(MapActivity.class, getString(R.string.mainPage_Map));
-        addItemWithMainPageItem(TestActivity.class, getString(R.string.mainPage_Test));
+        addItemWithMainPageItem(MapActivity.class, this.getString(R.string.mainPage_Map));
+        addItemWithMainPageItem(TestActivity.class, this.getString(R.string.mainPage_Test));
         homeAdapter.notifyDataSetChanged();
     }
     private void addItemWithMainPageItem(Class<?> cls, String name) {

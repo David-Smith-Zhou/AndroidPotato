@@ -3,7 +3,12 @@ package com.androidpotato.widget;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.CornerPathEffect;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PathEffect;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,8 +17,11 @@ import android.view.View;
 import com.androidpotato.widget.dto.Coordinate;
 import com.davidzhou.library.util.ULog;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 
 /**
@@ -23,24 +31,33 @@ import java.util.LinkedList;
 public class TouchView extends View {
     private static final String TAG = "TouchView";
     private static final float RADIUS = 30;
-    private Context context;
-    private boolean isInit = true;
     private LinkedList<Coordinate> circleCenters;
     private Paint paint;
+    private Canvas mCanvas;
+    private static final int RECORD_POINTS_NUMBER = 10;
+    private float[] mPoints = new float[RECORD_POINTS_NUMBER * 2];
+    private int mIndex = 0;
+    private Path mPointPath;
 
     public TouchView(Context context, AttributeSet sets) {
         super(context, sets);
-        this.context = context;
         init();
     }
+
     public TouchView(Context context) {
         this(context, null);
     }
 
     private void init() {
         circleCenters = new LinkedList<Coordinate>();
-        paint  = new Paint();
-
+        PathEffect pathEffect = new CornerPathEffect(60);
+        paint = new Paint();
+        paint.setColor(Color.RED);
+        paint.setStrokeWidth(10f);
+        paint.setAntiAlias(true);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setPathEffect(pathEffect);
+        mPointPath = new Path();
     }
 
     @Override
@@ -49,101 +66,43 @@ public class TouchView extends View {
         ULog.i(TAG, "onMeasure: width = " + getMeasuredWidth() + ", height = " + getMeasuredHeight());
     }
 
-    private void createCircles(Canvas canvas) {
-        paint.setColor(Color.BLUE);
-        int width = canvas.getWidth();
-        int height = canvas.getHeight();
-
-        for (float x = RADIUS, y = RADIUS; x < width; x += 2 * RADIUS) {
-            circleCenters.add(new Coordinate(x, y));
-        }
-
-        for (float x = RADIUS, y = height / 2; x < width; x += 2 * RADIUS) {
-            circleCenters.add(new Coordinate(x, y));
-        }
-
-        for (float x = RADIUS, y = height - RADIUS; x < width; x += 2 * RADIUS) {
-            circleCenters.add(new Coordinate(x, y));
-        }
-
-        for (float x = RADIUS, y = RADIUS; y < height; y += 2 * RADIUS) {
-            circleCenters.add(new Coordinate(x, y));
-        }
-
-        for (float x = width / 2, y = RADIUS; y < height; y += 2 * RADIUS) {
-            circleCenters.add(new Coordinate(x, y));
-        }
-
-        for (float x = width - RADIUS, y = RADIUS; y < height; y += 2 * RADIUS) {
-            circleCenters.add(new Coordinate(x, y));
-        }
-        drawCircles(canvas);
-        isInit = false;
-
-    }
-    private void drawCircles(Canvas canvas) {
-        for (Coordinate center : circleCenters) {
-//            if (center.isShow()) {
-                canvas.drawCircle(center.getX(), center.getY(), RADIUS, paint);
-//            }
-        }
-    }
     @Override
     protected void onDraw(Canvas canvas) {
         ULog.i(TAG, "onDraw");
-        super.onDraw(canvas);
-//        paint.setColor(Color.YELLOW);
-//        canvas.drawRect(0, 0, getMeasuredWidth(), getMeasuredHeight(), paint);
-
-        if (isInit) {
-            createCircles(canvas);
-        } else {
-            drawCircles(canvas);
-        }
-
+        mCanvas = canvas;
     }
 
-    private void checkDistance(float x, float y) {
-
-        Iterator<Coordinate> iterator = circleCenters.iterator();
-        while(iterator.hasNext()) {
-            Coordinate coordinate = iterator.next();
-            float disXAbs = Math.abs(x - coordinate.getX());
-            float disYAbs = Math.abs(y - coordinate.getY());
-            double distance = Math.sqrt(Math.pow(disXAbs, 2) + Math.pow(disYAbs, 2));
-            if (distance < RADIUS) {
-                iterator.remove();
-                ULog.i(TAG, "circleCenters size = " + circleCenters.size());
-                invalidate();
-                break;
-            }
-        }
-
-//        for (Coordinate coordinate : circleCenters) {
-//            if (coordinate.isShow()) {
-//                float disXAbs = Math.abs(x - coordinate.getX());
-//                float disYAbs = Math.abs(y - coordinate.getY());
-//                double distance = Math.sqrt(Math.pow(disXAbs, 2) + Math.pow(disYAbs, 2));
-//                if (distance < RADIUS) {
-//                    coordinate.setShow(false);
-//                    showCount--;
-//                    invalidate();
-//                }
-//            }
-//        }
+    public void clear() {
+//        Paint paint = new Paint();
+//        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+//        mCanvas.drawPaint(paint);
+//        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC));
     }
-
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        ULog.i(TAG, "onTouchEvent: X = " + event.getX() + ", Y = " + event.getY());
-
-        if (circleCenters.size() != 0) {
-            checkDistance(event.getX(), event.getY());
-        } else {
-            ULog.i(TAG, "onTouchEvent: no circles");
-        }
         super.onTouchEvent(event);
+        ULog.i(TAG, "onTouchEvent: X = " + event.getX() + ", Y = " + event.getY());
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_POINTER_UP:
+                clear();
+                mPointPath.reset();
+                invalidate();
+                return true;
+            case MotionEvent.ACTION_UP:
+                break;
+            case MotionEvent.ACTION_DOWN:
+                mPointPath.moveTo(event.getX(), event.getY());
+                break;
+            case MotionEvent.ACTION_MOVE:
+                mPointPath.lineTo(event.getX(), event.getY());
+                break;
+        }
+        if (!mPointPath.isEmpty()) {
+            mCanvas.drawPoints(mPoints, paint);
+            mCanvas.drawPath(mPointPath, paint);
+            invalidate();
+        }
         return true;
     }
 }
