@@ -18,6 +18,7 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -35,7 +36,6 @@ public class FileTestActivity extends TestTemplateActivity implements CommonTest
     @Override
     protected void onResume() {
         super.onResume();
-        test();
     }
 
     @Override
@@ -45,15 +45,17 @@ public class FileTestActivity extends TestTemplateActivity implements CommonTest
                 test();
                 break;
             case BTN_INDEX_2:
-                debug();
+                test2();
                 break;
             case BTN_INDEX_3:
+                test3();
                 break;
             case BTN_INDEX_4:
                 break;
         }
     }
-    private void debug() {
+
+    private void test2() {
         Person person = new Person();
         person.setBirthday(TimeUtil.currDateStr());
         person.setMale(true);
@@ -72,17 +74,29 @@ public class FileTestActivity extends TestTemplateActivity implements CommonTest
             public void subscribe(ObservableEmitter<String> emitter) throws Exception {
                 try {
                     emitter.onNext("123");
+                    Thread.sleep(1000);
                     emitter.onNext("456");
+                    Thread.sleep(1000);
                     emitter.onNext("789");
+                    Thread.sleep(1000);
                     emitter.onNext("123");
+                    Thread.sleep(1000);
                     emitter.onNext("456");
+                    Thread.sleep(1000);
                     emitter.onNext("789");
+                    Thread.sleep(1000);
                     emitter.onNext("123");
+                    Thread.sleep(1000);
                     emitter.onNext("456");
+                    Thread.sleep(1000);
                     emitter.onNext("789");
+                    Thread.sleep(1000);
                     emitter.onNext("123");
+                    Thread.sleep(1000);
                     emitter.onNext("456");
+                    Thread.sleep(1000);
                     emitter.onNext("789");
+                    Thread.sleep(1000);
                     emitter.onComplete();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -107,6 +121,7 @@ public class FileTestActivity extends TestTemplateActivity implements CommonTest
                 })
                 .subscribe(new Observer<Integer>() {
                     private Disposable disposable;
+
                     @Override
                     public void onSubscribe(Disposable d) {
                         disposable = d;
@@ -129,6 +144,48 @@ public class FileTestActivity extends TestTemplateActivity implements CommonTest
                     @Override
                     public void onComplete() {
                         ULog.i(TAG, "onComplete");
+                    }
+                });
+
+    }
+    private void test3() {
+        Observable<String> tmpObservable1 = Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+                try {
+                    ULog.i(TAG, "tmpObservable1 start");
+                    Thread.sleep(1500);
+                    emitter.onNext("tmpObservable1");
+                    emitter.onComplete();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).subscribeOn(Schedulers.io());
+        Observable<String> tmpObservable2 = Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+                try {
+                    ULog.i(TAG, "tmpObservable2 start");
+                    Thread.sleep(3000);
+                    emitter.onNext("tmpObservable2");
+                    emitter.onComplete();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).subscribeOn(Schedulers.io());
+        Observable.zip(tmpObservable1, tmpObservable2, new BiFunction<String, String, String>() {
+            @Override
+            public String apply(String s, String s2) throws Exception {
+                return s + s2;
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        ULog.i(TAG, "zip: " + s);
                     }
                 });
     }

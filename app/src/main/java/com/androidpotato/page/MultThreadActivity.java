@@ -21,6 +21,7 @@ public class MultThreadActivity extends TestTemplateActivity {
     private Handler mHandler;
     private MyHandlerThread mMyHandlerThread;
     private ScheduledExecutorService service;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,7 +109,7 @@ public class MultThreadActivity extends TestTemplateActivity {
             try {
                 ULog.i("doInBackground", "integer: " + integers[0]);
                 int i = 0;
-                while(i < integers[0]) {
+                while (i < integers[0]) {
                     publishProgress(i);
                     Thread.sleep(1 * 1000);
                     i++;
