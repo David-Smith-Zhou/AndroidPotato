@@ -11,6 +11,7 @@ import com.androidpotato.page.test.TestTemplateActivity;
 import com.androidpotato.common.CommonTestCallback;
 import com.androidpotato.utils.TimeUtil;
 import com.davidzhou.library.util.ULog;
+import com.trello.rxlifecycle2.android.ActivityEvent;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -51,6 +52,7 @@ public class FileTestActivity extends TestTemplateActivity implements CommonTest
                 test3();
                 break;
             case BTN_INDEX_4:
+                test4();
                 break;
         }
     }
@@ -148,6 +150,7 @@ public class FileTestActivity extends TestTemplateActivity implements CommonTest
                 });
 
     }
+
     private void test3() {
         Observable<String> tmpObservable1 = Observable.create(new ObservableOnSubscribe<String>() {
             @Override
@@ -156,12 +159,17 @@ public class FileTestActivity extends TestTemplateActivity implements CommonTest
                     ULog.i(TAG, "tmpObservable1 start");
                     Thread.sleep(1500);
                     emitter.onNext("tmpObservable1");
+                    Thread.sleep(1500);
+                    emitter.onNext("tmpObservable1");
+                    Thread.sleep(1500);
+                    emitter.onNext("tmpObservable1");
                     emitter.onComplete();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-        }).subscribeOn(Schedulers.io());
+        })
+                .subscribeOn(Schedulers.io());
         Observable<String> tmpObservable2 = Observable.create(new ObservableOnSubscribe<String>() {
             @Override
             public void subscribe(ObservableEmitter<String> emitter) throws Exception {
@@ -169,18 +177,25 @@ public class FileTestActivity extends TestTemplateActivity implements CommonTest
                     ULog.i(TAG, "tmpObservable2 start");
                     Thread.sleep(3000);
                     emitter.onNext("tmpObservable2");
+                    Thread.sleep(3000);
+                    emitter.onNext("tmpObservable2");
+                    Thread.sleep(3000);
+                    emitter.onNext("tmpObservable2");
                     emitter.onComplete();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-        }).subscribeOn(Schedulers.io());
+        })
+                .subscribeOn(Schedulers.io());
         Observable.zip(tmpObservable1, tmpObservable2, new BiFunction<String, String, String>() {
             @Override
             public String apply(String s, String s2) throws Exception {
-                return s + s2;
+                return s + " " + s2;
             }
-        }).subscribeOn(Schedulers.io())
+        })
+                .compose(this.<String>bindUntilEvent(ActivityEvent.DESTROY))
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<String>() {
                     @Override
@@ -188,5 +203,9 @@ public class FileTestActivity extends TestTemplateActivity implements CommonTest
                         ULog.i(TAG, "zip: " + s);
                     }
                 });
+    }
+
+    private void test4() {
+//        ULog.i(TAG, "disposable: " + disposable.isDisposed());
     }
 }

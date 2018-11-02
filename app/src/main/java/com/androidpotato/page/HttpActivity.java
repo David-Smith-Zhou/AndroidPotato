@@ -1,14 +1,11 @@
 package com.androidpotato.page;
 
-import android.app.Activity;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
-import android.widget.Button;
 
-import com.androidpotato.R;
+import com.androidpotato.common.CommonTestCallback;
+import com.androidpotato.page.test.TestTemplateActivity;
 import com.davidzhou.library.util.ULog;
 
 import java.io.IOException;
@@ -26,50 +23,34 @@ import okhttp3.Response;
  * Created by David on 2017/6/26 0026.
  */
 
-public class HttpActivity extends BaseActivity {
+public class HttpActivity extends TestTemplateActivity implements CommonTestCallback {
     private static final String TAG = "HttpActivity";
     private static final int BRANCH_CODE = 1;
     private static final String TRANSLATE_URL = "http://api.map.baidu.com/geoconv/v1/";
     private static final String DEVICE_SN = "testvirtualdevice";
     private static final double LONGITUDE = 113.567794;
     private static final double LATITUDE = 22.324640;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.page_http);
-        init();
+        setCommonTestCallback(this);
     }
-    private void init() {
-        Button debugBtn = findViewById(R.id.http_debug_btn);
-        debugBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+
+    @Override
+    public void onBtnClicked(BtnIndex position) {
+        switch (position) {
+            case BTN_INDEX_1:
                 execHttpRequest();
-            }
-        });
+                break;
+        }
     }
+
     private void execHttpRequest() {
         MyAsyncTask task = new MyAsyncTask(HttpActivity.this);
         task.execute();
     }
 
-    private void connect() {
-        Uri.Builder builder = new Uri.Builder();
-        builder.scheme("http")
-                .authority("pay.smit.com.cn")
-                .appendPath("smitup")
-                .appendPath("do")
-                .appendPath("update")
-                .appendPath("check")
-                .appendPath("apk")
-                .appendQueryParameter("device_sn", DEVICE_SN)
-                .appendQueryParameter("version_code", "" + 1)
-                .appendQueryParameter("version_name", "V1.0")
-                .appendQueryParameter("package_name", "com.smit.terminalapp")
-                .appendQueryParameter("branch_code", "" + BRANCH_CODE);
-        String url = builder.build().toString();
-        ULog.i(TAG, "url: " + url);
-    }
     private void useOKHttp(double longitude, double latitude) {
         try {
             String address = "http://api.map.baidu.com/geoconv/v1/?" +
@@ -87,6 +68,7 @@ public class HttpActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
+
     private void useHttpURLConnection(double longitude, double latitude) {
         try {
             String address = "http://api.map.baidu.com/geoconv/v1/?" +
@@ -108,21 +90,25 @@ public class HttpActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
-    private String streamToString(InputStream inputStream) throws IOException{
+
+    private String streamToString(InputStream inputStream) throws IOException {
         byte[] buffer = new byte[2048];
         int count = inputStream.read(buffer);
         byte[] data = new byte[count];
         System.arraycopy(buffer, 0, data, 0, count);
         return new String(data);
     }
+
     static class MyAsyncTask extends AsyncTask {
         private WeakReference<HttpActivity> weakReference;
+
         public MyAsyncTask(HttpActivity httpActivity) {
             weakReference = new WeakReference<HttpActivity>(httpActivity);
         }
+
         @Override
         protected void onPreExecute() {
-            ULog.i(TAG, "onPreExecute: " );
+            ULog.i(TAG, "onPreExecute: ");
             super.onPreExecute();
         }
 
